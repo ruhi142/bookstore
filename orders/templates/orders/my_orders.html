@@ -1,0 +1,84 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}My Orders — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orders/css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="ord-hero">
+  <div class="container">
+    <span class="eyebrow">Order History</span>
+    <h1>My Orders</h1>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container trust-strip-row">
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></span>
+      <div><strong>Real-Time Tracking</strong><span>Know where every order is</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></span>
+      <div><strong>Easy Returns</strong><span>7-day return window</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+      <div><strong>Secure Payments</strong><span>Every order fully protected</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></span>
+      <div><strong>24/7 Support</strong><span>We're always here to help</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section ord-section">
+  <div class="container">
+
+    {% if orders %}
+    <div class="ord-list">
+      {% for order in orders %}
+      <div class="ord-card">
+        <div class="ord-card-head">
+          <div>
+            <h4>Order {{ order.order_id }}</h4>
+            <span class="ord-card-date">Placed on {{ order.placed_at|date:"d M Y, g:i A" }} · {{ order.items.count }} item{{ order.items.count|pluralize }}</span>
+          </div>
+          <span class="ord-status-badge {% if order.current_status == 'Delivered' %}ord-status-delivered{% else %}ord-status-transit{% endif %}">{{ order.current_status }}</span>
+        </div>
+        <div class="ord-card-books">
+          {% for item in order.items.all %}
+          <img src="https://images.unsplash.com/photo-{{ item.img }}?w=100&q=80" alt="{{ item.title }}">
+          {% endfor %}
+        </div>
+        <div class="ord-card-foot">
+          <span class="ord-card-total">Total: ₹{{ order.total_amount }}</span>
+          <div class="ord-card-actions">
+            <a href="{% url 'orders:track_order' %}?order_id={{ order.order_id }}" class="btn-hero-ghost">Track Order</a>
+            <a href="{% url 'orders:invoice' order.order_id %}" target="_blank" rel="noopener" class="btn-primary ord-invoice-btn">Download Invoice</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="ord-notfound">
+      <h3>You haven't placed any orders yet</h3>
+      <p>Once you check out, your orders will show up here.</p>
+      <a href="{% url 'catalog:category_listing' 'fiction' %}" class="btn-hero-primary">Browse Fiction</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'orders/js/my_orders.js' %}"></script>
+{% endblock %}

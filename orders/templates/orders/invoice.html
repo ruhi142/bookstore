@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice {{ order.order_id }} — Inkwell Books</title>
+  <link rel="stylesheet" href="{% static 'orders/css/invoice.css' %}">
+</head>
+<body>
+
+  <div class="inv-toolbar">
+    <a href="{% url 'orders:my_orders' %}" class="inv-back">&larr; Back to My Orders</a>
+    <button type="button" class="inv-print-btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="inv-page">
+
+    <div class="inv-head">
+      <div class="inv-brand">
+        <div class="inv-brand-mark">Inkwell</div>
+        <div class="inv-brand-sub">Books &amp; Stories</div>
+        <div class="inv-brand-addr">
+          Inkwell Books Pvt. Ltd.<br>
+          4th Floor, Techno Complex, Salt Lake Sector V,<br>
+          Kolkata, West Bengal 700091, India<br>
+          support@inkwellbooks.in · +91 12345 67890
+        </div>
+      </div>
+      <div class="inv-title-block">
+        <h1>INVOICE</h1>
+        <table class="inv-meta-table">
+          <tr><td>Invoice / Order No.</td><td>{{ order.order_id }}</td></tr>
+          <tr><td>Date Placed</td><td>{{ order.placed_at|date:"d M Y" }}</td></tr>
+          <tr><td>Payment Method</td><td>{{ order.get_payment_method_display }}</td></tr>
+          <tr><td>Status</td><td>{{ order.current_status }}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="inv-parties">
+      <div>
+        <h4>Billed To</h4>
+        <p>
+          {{ order.user.get_full_name|default:order.user.username }}<br>
+          {{ order.user.email }}
+          {% if order.user.profile.phone %}<br>{{ order.user.profile.phone }}{% endif %}
+        </p>
+      </div>
+      {% if order.has_shipping_address %}
+      <div>
+        <h4>Deliver To</h4>
+        <p>
+          {{ order.shipping_full_name }}<br>
+          {{ order.shipping_line1 }}{% if order.shipping_line2 %}, {{ order.shipping_line2 }}{% endif %}<br>
+          {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+          {{ order.shipping_phone }}
+        </p>
+      </div>
+      {% endif %}
+    </div>
+
+    <table class="inv-items-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Author</th>
+          <th class="num">Qty</th>
+          <th class="num">Price</th>
+          <th class="num">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %}
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.author }}</td>
+          <td class="num">{{ item.qty }}</td>
+          <td class="num">₹{{ item.price }}</td>
+          <td class="num">₹{{ item.line_total }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="inv-summary">
+      <table>
+        <tr><td>Subtotal</td><td class="num">₹{{ order.subtotal }}</td></tr>
+        <tr><td>Delivery Fee</td><td class="num">{% if order.delivery_fee %}₹{{ order.delivery_fee }}{% else %}Free{% endif %}</td></tr>
+        <tr class="inv-total-row"><td>Total Paid</td><td class="num">₹{{ order.total_amount }}</td></tr>
+      </table>
+    </div>
+
+    <div class="inv-footer">
+      <p>Thank you for shopping with Inkwell Books. Prices shown are inclusive of applicable taxes.</p>
+      <p>Questions about this order? Reach us at support@inkwellbooks.in or +91 12345 67890.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

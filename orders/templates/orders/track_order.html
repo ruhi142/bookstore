@@ -1,0 +1,68 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Track Order — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orders/css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="ord-hero">
+  <div class="container">
+    <span class="eyebrow">Real-Time Updates</span>
+    <h1>Track Your Order</h1>
+    <p>Enter your Order ID to see exactly where your books are, updated live.</p>
+  </div>
+</section>
+
+<section class="section ord-section">
+  <div class="container">
+
+    <form class="ord-search-card" method="get">
+      <div class="field">
+        <label>Order ID</label>
+        <input type="text" name="order_id" placeholder="e.g. INK-2026-48512" value="{{ order_id_searched }}">
+      </div>
+      <button class="btn-primary ord-track-btn" type="submit">Track Order</button>
+    </form>
+
+    {% if order %}
+    <div class="ord-result">
+      <div class="ord-result-head">
+        <div>
+          <h3>Order {{ order.order_id }}</h3>
+          <span class="ord-eta">Expected delivery: <strong>{{ order.expected_delivery|date:"d M Y, g:i A" }}</strong></span>
+        </div>
+        <span class="ord-status-badge {% if order.current_status == 'Delivered' %}ord-status-delivered{% else %}ord-status-transit{% endif %}">{{ order.current_status }}</span>
+      </div>
+
+      <div class="ord-timeline">
+        {% for step in order.timeline %}
+        <div class="ord-tl-step {% if step.done %}is-done{% endif %} {% if step.label == order.current_status %}is-active{% endif %}">
+          <span class="ord-tl-dot"></span>
+          <div>
+            <h4>{{ step.label }}</h4>
+            <p>{% if step.done %}{{ step.time|date:"d M Y, g:i A" }}{% else %}Pending{% endif %}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% elif not_found %}
+    <div class="ord-notfound">
+      <h3>We couldn't find order "{{ order_id_searched }}"</h3>
+      <p>Double-check the Order ID, or view your full history in <a href="{% url 'orders:my_orders' %}">My Orders</a>.</p>
+    </div>
+    {% else %}
+    <div class="ord-notfound">
+      <h3>Enter your Order ID above to see live tracking</h3>
+      <p>You'll find it in your confirmation email, or under <a href="{% url 'orders:my_orders' %}">My Orders</a>.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
