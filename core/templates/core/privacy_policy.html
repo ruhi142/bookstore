@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Privacy Policy — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/privacy_policy.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="pp-hero">
+  <div class="container">
+    <span class="eyebrow">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: 20 August 2026</p>
+  </div>
+</section>
+
+<section class="section pp-section">
+  <div class="container pp-layout">
+
+    <nav class="pp-toc">
+      <span>On this page</span>
+      <a href="#collect">Information we collect</a>
+      <a href="#use">How we use it</a>
+      <a href="#sharing">Sharing &amp; disclosure</a>
+      <a href="#security">Data security</a>
+      <a href="#rights">Your rights</a>
+      <a href="#cookies">Cookies</a>
+      <a href="#contact">Contact us</a>
+    </nav>
+
+    <div class="pp-content">
+      <p>Inkwell Books ("we", "us", "our") respects your privacy. This policy explains what information we collect when you use our website, how we use it, and the choices you have.</p>
+
+      <h3 id="collect">1. Information we collect</h3>
+      <p>When you create an account, place an order, or contact support, we may collect your name, email address, mobile number, shipping address, and order history. We also collect basic usage data (pages visited, device type) to improve the site.</p>
+
+      <h3 id="use">2. How we use it</h3>
+      <p>We use your information to process orders, verify payments via OTP, provide customer support, send order updates, and — only if you've opted in — send you offers and reading recommendations.</p>
+
+      <h3 id="sharing">3. Sharing &amp; disclosure</h3>
+      <p>We do not sell your personal data. We share limited information with delivery partners (to fulfil your order) and payment processors (to complete your transaction), strictly for those purposes.</p>
+
+      <h3 id="security">4. Data security</h3>
+      <p>All checkouts are OTP-verified, and payment details are never stored on our own servers. We use industry-standard measures to protect your account information from unauthorized access.</p>
+
+      <h3 id="rights">5. Your rights</h3>
+      <p>You can request access to, correction of, or deletion of your personal data at any time by contacting us. You can also unsubscribe from marketing emails using the link in any email we send.</p>
+
+      <h3 id="cookies">6. Cookies</h3>
+      <p>We use cookies and local storage to keep you logged in, remember items in your cart and wishlist, and understand how the site is used. You can disable cookies in your browser, though some features (like cart persistence) may stop working.</p>
+
+      <h3 id="contact">7. Contact us</h3>
+      <p>Questions about this policy can be sent to <a href="mailto:privacy@inkwellbooks.in">privacy@inkwellbooks.in</a> or through our <a href="{% url 'core:contact' %}">Contact page</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

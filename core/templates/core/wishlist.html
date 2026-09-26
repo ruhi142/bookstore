@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}My Wishlist — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/wishlist.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="wl-hero">
+  <div class="container">
+    <span class="eyebrow">Saved For Later</span>
+    <h1>My Wishlist</h1>
+    <p>Titles you've saved to come back to — move any of them to your cart whenever you're ready.</p>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container trust-strip-row">
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.4 5 6 5c2 0 3.5 1 4 2 .5-1 2-2 4-2 3.6 0 5.5 3.4 4 6.9-2.5 4.5-10 9.1-10 9.1z"/></svg></span>
+      <div><strong>Saved For Later</strong><span>Never lose track of a title</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></span>
+      <div><strong>Free Delivery</strong><span>On orders above ₹499</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></span>
+      <div><strong>Easy Returns</strong><span>7-day return window</span></div>
+    </div>
+    <div class="trust-item">
+      <span class="trust-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+      <div><strong>Secure Checkout</strong><span>256-bit encrypted payments</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wl-section">
+  <div class="container">
+
+    <!-- Empty state (shown/hidden by wishlist.js depending on saved items) -->
+    <div class="wl-empty" id="wlEmpty">
+      <div class="wl-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+      </div>
+      <h3>Your wishlist is empty</h3>
+      <p>Tap the heart icon on any book to save it here for later.</p>
+      <a href="{% url 'catalog:category_listing' 'fiction' %}" class="btn-hero-primary">Browse Fiction</a>
+    </div>
+
+    <div class="wl-grid" id="wlGrid"></div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/wishlist.js' %}"></script>
+{% endblock %}

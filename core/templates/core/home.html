@@ -1,0 +1,318 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Inkwell Books — New & Pre-loved Books, Best Prices, Pan-India Delivery{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO (3-slide carousel — same Inkwell styling, now slidable) ============ -->
+<section class="hero">
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-track" id="heroTrack">
+
+      <!-- Slide 1 -->
+      <div class="hero-slide">
+        <div class="container hero-row">
+          <div class="hero-copy">
+            <span class="eyebrow">📚 Over 40,000 titles · Pan-India delivery</span>
+            <h1>Find a book that finds <em>you</em> back.</h1>
+            <p>New releases, timeless classics and quality-checked pre-loved books — with an AI assistant that reads your mood and hands you the right title.</p>
+            <div class="hero-cta-row">
+              <a href="{% url 'catalog:category_listing' 'sale' %}" class="btn-hero-primary">Shop the Sale</a>
+              <a href="{% url 'catalog:category_listing' 'fiction' %}" class="btn-hero-ghost">Browse Fiction →</a>
+            </div>
+            <div class="hero-stats">
+              <div><strong>4.8/5</strong><span>Reader rating</span></div>
+              <div><strong>2 Lakh+</strong><span>Orders delivered</span></div>
+              <div><strong>24 hrs</strong><span>Avg. dispatch</span></div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-book hero-book-1">
+              <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=380&q=80" alt="Featured book cover">
+              <span class="hero-tag">Editor's Pick</span>
+            </div>
+            <div class="hero-book hero-book-2">
+              <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&q=80" alt="Featured book cover">
+            </div>
+            <div class="hero-badge">
+              <span class="hero-badge-off">50%</span>
+              <span>OFF<br>select titles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="hero-slide">
+        <div class="container hero-row">
+          <div class="hero-copy">
+            <span class="eyebrow">🆕 New Arrivals · Fresh off the press</span>
+            <h1>Meet your next <em>obsession</em>.</h1>
+            <p>This week's freshest releases across fiction and non-fiction — handpicked before they hit anyone's bestseller list.</p>
+            <div class="hero-cta-row">
+              <a href="{% url 'catalog:category_listing' 'non-fiction' %}" class="btn-hero-primary">Shop New Arrivals</a>
+              <a href="{% url 'catalog:category_listing' 'non-fiction' %}" class="btn-hero-ghost">Browse Non-Fiction →</a>
+            </div>
+            <div class="hero-stats">
+              <div><strong>4.8/5</strong><span>Reader rating</span></div>
+              <div><strong>2 Lakh+</strong><span>Orders delivered</span></div>
+              <div><strong>24 hrs</strong><span>Avg. dispatch</span></div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-book hero-book-1">
+              <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=380&q=80" alt="Featured book cover">
+              <span class="hero-tag">Just In</span>
+            </div>
+            <div class="hero-book hero-book-2">
+              <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=300&q=80" alt="Featured book cover">
+            </div>
+            <div class="hero-badge">
+              <span class="hero-badge-off">NEW</span>
+              <span>This<br>week</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="hero-slide">
+        <div class="container hero-row">
+          <div class="hero-copy">
+            <span class="eyebrow">🎓 Academic Season · Buy 2 Get 1 Free</span>
+            <h1>Ace this semester, <em>affordably</em>.</h1>
+            <p>Textbooks, guides and reference titles across every stream — at prices that won't wreck a student budget.</p>
+            <div class="hero-cta-row">
+              <a href="{% url 'catalog:category_listing' 'academic' %}" class="btn-hero-primary">Shop Academic Deals</a>
+              <a href="{% url 'catalog:category_listing' 'academic' %}" class="btn-hero-ghost">Browse Academic →</a>
+            </div>
+            <div class="hero-stats">
+              <div><strong>4.8/5</strong><span>Reader rating</span></div>
+              <div><strong>2 Lakh+</strong><span>Orders delivered</span></div>
+              <div><strong>24 hrs</strong><span>Avg. dispatch</span></div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-book hero-book-1">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=380&q=80" alt="Featured book cover">
+              <span class="hero-tag">Student Pick</span>
+            </div>
+            <div class="hero-book hero-book-2">
+              <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=80" alt="Featured book cover">
+            </div>
+            <div class="hero-badge">
+              <span class="hero-badge-off">B2G1</span>
+              <span>on academic<br>titles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="hero-arrow hero-arrow-prev" id="heroPrev" type="button" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="hero-arrow hero-arrow-next" id="heroNext" type="button" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+
+    <div class="hero-dots" id="heroDots">
+      <button class="hero-dot is-active" type="button" data-slide="0" aria-label="Go to slide 1"></button>
+      <button class="hero-dot" type="button" data-slide="1" aria-label="Go to slide 2"></button>
+      <button class="hero-dot" type="button" data-slide="2" aria-label="Go to slide 3"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OFFER MARQUEE STRIP (bookswagon-style) ============ -->
+<div class="offer-strip">
+  <div class="offer-strip-track">
+    <span>🎉 Flat 25% off on Fiction — code <b>READ25</b></span>
+    <span>📦 Free delivery above ₹499</span>
+    <span>💳 Extra 10% off on prepaid orders</span>
+    <span>🎓 Academic books — buy 2 get 1 free</span>
+    <span>🎉 Flat 25% off on Fiction — code <b>READ25</b></span>
+    <span>📦 Free delivery above ₹499</span>
+    <span>💳 Extra 10% off on prepaid orders</span>
+    <span>🎓 Academic books — buy 2 get 1 free</span>
+  </div>
+</div>
+
+<!-- ============ SHOP BY CATEGORY — "book shelf" signature element ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Shop by Category</h2>
+      <p>Pick a shelf — every spine below is a full aisle of its own.</p>
+    </div>
+    <div class="shelf" role="list">
+      <a href="{% url 'catalog:category_listing' 'fiction' %}" class="spine spine-tall" style="--spine:#A63D40;" role="listitem">
+        <span class="spine-title">Fiction</span>
+        <span class="spine-count">6,200 titles</span>
+      </a>
+      <a href="{% url 'catalog:category_listing' 'non-fiction' %}" class="spine spine-mid" style="--spine:#16302A;" role="listitem">
+        <span class="spine-title">Non-Fiction</span>
+        <span class="spine-count">3,400 titles</span>
+      </a>
+      <a href="{% url 'catalog:category_listing' 'academic' %}" class="spine spine-tall" style="--spine:#4B6B5E;" role="listitem">
+        <span class="spine-title">Academic</span>
+        <span class="spine-count">5,100 titles</span>
+      </a>
+      <a href="{% url 'catalog:category_listing' 'children' %}" class="spine spine-short" style="--spine:#C89B3C;" role="listitem">
+        <span class="spine-title">Children</span>
+        <span class="spine-count">1,800 titles</span>
+      </a>
+      <a href="{% url 'catalog:category_listing' 'comics' %}" class="spine spine-mid" style="--spine:#7A4B6B;" role="listitem">
+        <span class="spine-title">Comics</span>
+        <span class="spine-count">960 titles</span>
+      </a>
+      <a href="{% url 'catalog:category_listing' 'self-help' %}" class="spine spine-short" style="--spine:#2C5A73;" role="listitem">
+        <span class="spine-title">Self-Help</span>
+        <span class="spine-count">1,120 titles</span>
+      </a>
+    </div>
+    <div class="shelf-board" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ============ DEAL OF THE DAY ============ -->
+<section class="section deal-section">
+  <div class="container deal-row">
+    <div class="deal-info">
+      <span class="eyebrow eyebrow-light">⚡ Deal of the Day</span>
+      <h2 class="deal-heading">Up to 60% off — ends tonight</h2>
+      <p>Hand-picked bestsellers at their lowest price this month. Stock is limited per title.</p>
+      <div class="countdown" id="dealCountdown">
+        <div><span id="cdHours">05</span><small>Hrs</small></div>
+        <div><span id="cdMins">42</span><small>Min</small></div>
+        <div><span id="cdSecs">18</span><small>Sec</small></div>
+      </div>
+      <a href="{% url 'catalog:category_listing' 'sale' %}" class="btn-hero-primary">View All Deals</a>
+    </div>
+    <div class="deal-cards">
+      <article class="book-card">
+        <span class="badge-sale">-40%</span>
+        <a href="{% url 'catalog:book_detail' 'fiction-0' %}" class="book-card-link">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=260&q=80" alt="Book cover">
+          <h4>The Silent Patient</h4>
+          <span class="author">Alex Michaelides</span>
+        </a>
+        <div class="price-row"><span class="price-now">₹239</span><span class="price-old">₹399</span></div>
+      </article>
+      <article class="book-card">
+        <span class="badge-sale">-35%</span>
+        <a href="{% url 'catalog:book_detail' 'non-fiction-0' %}" class="book-card-link">
+          <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=260&q=80" alt="Book cover">
+          <h4>Atomic Habits</h4>
+          <span class="author">James Clear</span>
+        </a>
+        <div class="price-row"><span class="price-now">₹299</span><span class="price-old">₹459</span></div>
+      </article>
+      <article class="book-card">
+        <span class="badge-sale">-50%</span>
+        <a href="{% url 'catalog:book_detail' 'non-fiction-1' %}" class="book-card-link">
+          <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=260&q=80" alt="Book cover">
+          <h4>Sapiens</h4>
+          <span class="author">Yuval Noah Harari</span>
+        </a>
+        <div class="price-row"><span class="price-now">₹249</span><span class="price-old">₹499</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEST SELLERS GRID ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>This Week's Best Sellers</h2>
+      <p>What Inkwell readers are ordering the most right now.</p>
+    </div>
+    <div class="book-grid">
+      {% for book in best_sellers %}
+      <article class="book-card" data-id="{{ book.id }}">
+        <span class="badge-sale">-{{ book.discount }}%</span>
+        <button class="cat-wishlist-btn" type="button" aria-label="Add to wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <a href="{% url 'catalog:book_detail' book.id %}" class="book-card-link">
+          <img src="{{ book.img }}" alt="{{ book.title }} cover">
+          <h4>{{ book.title }}</h4>
+          <span class="author">{{ book.author }}</span>
+        </a>
+        <div class="price-row"><span class="price-now">₹{{ book.price }}</span><span class="price-old">₹{{ book.old_price }}</span></div>
+        <button class="btn-add-cart" data-id="{{ book.id }}" data-title="{{ book.title }}" data-author="{{ book.author }}" data-price="{{ book.price }}" data-old-price="{{ book.old_price }}" data-img="{{ book.img }}">Add to Cart</button>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Why Read With Inkwell</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z"/></svg></div>
+        <h4>40,000+ Titles</h4>
+        <p>New and quality-checked pre-loved books across every genre and syllabus.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a7 7 0 0 0-7 7v3a2 2 0 0 0 2 2h1v-6a4 4 0 0 1 8 0v6h1a2 2 0 0 0 2-2v-3a7 7 0 0 0-7-7z"/><path d="M8 15v2a4 4 0 0 0 8 0v-2"/></svg></div>
+        <h4>AI Reading Assistant</h4>
+        <p>Tell our chatbot your mood or genre — get instant, personal picks.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+        <h4>OTP-Secured Checkout</h4>
+        <p>Every payment is protected with mobile OTP verification, every time.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="17.5" cy="18" r="1.5"/></svg></div>
+        <h4>Live Order Tracking</h4>
+        <p>Follow every order from dispatch to doorstep, in real time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section testi-section">
+  <div class="container">
+    <div class="section-head section-head-light">
+      <h2>Loved by Readers Across India</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Ordered 5 second-hand novels — every one arrived in the exact condition described. The tracking page kept me updated the whole way."</p>
+        <strong>— Riya S., Kolkata</strong>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"The chatbot recommended a thriller that I finished in two days. Didn't expect an online bookstore to actually 'get' my taste."</p>
+        <strong>— Arjun M., Pune</strong>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Checkout felt genuinely secure with the OTP step. Delivery was faster than promised too."</p>
+        <strong>— Farah K., Lucknow</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/home.js' %}"></script>
+{% endblock %}
