@@ -28,12 +28,21 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tp+8lm&u4*$$bl3&asd&ebta6idur9q^^tt^b50wq1$4z4b9i3'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-tp+8lm&u4*$$bl3&asd&ebta6idur9q^^tt^b50wq1$4z4b9i3',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 'localhost,127.0.0.1'
+).split(',')
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # ---- Razorpay ----
 # Get these from https://dashboard.razorpay.com/app/keys (Test Mode keys to
@@ -65,6 +74,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,6 +161,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # User-uploaded files (profile avatars, etc.)
 MEDIA_URL = 'media/'
@@ -176,8 +192,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 #        export EMAIL_HOST_PASSWORD=your16charapppassword
 #   Gmail's free tier allows roughly 500 emails/day.
 
-EMAIL_HOST_USER = 'bookstore.inkwell@gmail.com'
-EMAIL_HOST_PASSWORD = 'ivwclrkhdmfkfoqm'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'bookstore.inkwell@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
