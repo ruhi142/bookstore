@@ -1,0 +1,217 @@
+/* ==========================================================================
+   INKWELL BOOKS — checkout.css
+   Flipkart-style checkout: vertical numbered steps (Login -> Delivery
+   Address -> Order Summary -> Payment Options) in the main column, with a
+   sticky Price Details card alongside. Payment itself is a fake gateway —
+   this is a training-project simulation, not a real payment processor.
+   ========================================================================== */
+
+.chk-hero{ background: var(--ink); padding: 22px 0; }
+.chk-page-title{ color:#fff; font-size:22px; font-weight:700; letter-spacing:0.02em; }
+
+/* ============ TOP STEP TRACKER (Address -> Order Summary -> Payment) ============
+   Ticks are hidden by default and only appear on a step once .is-done is
+   applied — i.e. once the person has moved past it to the next step. */
+.chk-track{
+  display:flex; align-items:flex-start; list-style:none;
+  margin:20px 0 0; padding:0; max-width:480px;
+}
+.chk-track-step{
+  display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; width:64px;
+}
+.chk-track-circle{
+  width:26px; height:26px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; position:relative;
+  background: rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.35); color:#fff;
+  font-family: var(--font-mono); font-size:12.5px; font-weight:700;
+  transition: background 0.2s, border-color 0.2s;
+}
+.chk-track-tick{ display:none; width:14px; height:14px; }
+.chk-track-step.is-active .chk-track-circle{ background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.chk-track-step.is-done .chk-track-circle{ background: var(--success); border-color: var(--success); color:#fff; }
+.chk-track-step.is-done .chk-track-num{ display:none; }
+.chk-track-step.is-done .chk-track-tick{ display:block; }
+.chk-track-label{
+  font-size:11.5px; font-weight:600; letter-spacing:0.02em; text-align:center;
+  color: rgba(255,255,255,0.55); white-space:nowrap;
+}
+.chk-track-step.is-active .chk-track-label,
+.chk-track-step.is-done .chk-track-label{ color:#fff; }
+.chk-track-line{
+  flex:1; height:1.5px; background: rgba(255,255,255,0.25); margin:12px 4px 0; min-width:20px;
+  transition: background 0.2s;
+}
+.chk-track-step.is-done + .chk-track-line{ background: var(--success); }
+
+.chk-section{ padding-top:32px; }
+.chk-layout{ display:grid; grid-template-columns: 1.6fr 1fr; gap:24px; align-items:start; }
+
+/* ============ STEP BLOCKS ============ */
+.chk-block{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  margin-bottom:16px; box-shadow: var(--shadow-card); opacity:0.55;
+}
+.chk-block.is-active, .chk-block.is-done{ opacity:1; }
+
+/* A step-page is a full "screen" of the wizard: only one is ever visible at
+   a time (JS toggles display + slides it in/out), unlike Login above it
+   which is always shown. See checkout.js goToStep() for the slide logic. */
+.chk-block.chk-step-page{ display:none; }
+.chk-block.chk-step-page.is-active{ display:block; opacity:1; }
+
+.chk-block-head{
+  display:flex; align-items:center; gap:14px; padding:18px 26px;
+}
+.chk-block.is-active .chk-block-head{ border-bottom:1px solid var(--line); }
+.chk-block-num{
+  width:26px; height:26px; border-radius:50%; background: var(--paper-2); color: var(--charcoal-60);
+  display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); font-size:13px;
+  font-weight:700; flex-shrink:0;
+}
+.chk-block.is-active .chk-block-num{ background: var(--gold); color: var(--ink); }
+.chk-block-check{ background: var(--success); color:#fff; }
+.chk-block-check svg{ width:14px; height:14px; }
+.chk-block-headtext{ display:flex; flex-direction:column; gap:2px; }
+.chk-block-title{ font-size:13.5px; font-weight:700; letter-spacing:0.04em; color: var(--ink); }
+.chk-block-donetext{ font-size:12.5px; color: var(--charcoal-60); }
+
+.chk-block-body{ padding:24px 26px 28px; }
+
+/* Confirmed delivery-address recap shown at the top of Order Summary
+   (Flipkart shows "Deliver to: ... CHANGE" right above the item list,
+   rather than leaving a collapsed Address step behind). */
+.chk-block-donebar{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:0 0 20px; margin-bottom:20px; border-bottom:1px solid var(--line);
+}
+.chk-donebar-text{ display:flex; flex-direction:column; gap:4px; font-size:13px; color: var(--charcoal-60); }
+.chk-donebar-text strong{ font-size:14px; color: var(--ink); font-weight:700; }
+.chk-change-btn{
+  background:none; border:0; color: var(--gold-dark); font-weight:700; font-size:12.5px;
+  letter-spacing:0.03em; cursor:pointer; flex-shrink:0;
+}
+
+/* ============ DELIVERY ADDRESS ============ */
+.addr-select-list{ display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+.addr-select-card{
+  display:flex; align-items:flex-start; gap:12px; padding:16px 18px;
+  border:1.5px solid var(--line); border-radius: var(--radius-m); cursor:pointer; transition: all .15s;
+}
+.addr-select-card:hover{ border-color: var(--gold); }
+.addr-select-card.is-checked{ border-color: var(--ink); background: var(--paper-2); }
+.addr-select-card input{ position:absolute; opacity:0; width:0; height:0; }
+.addr-select-radio{
+  width:16px; height:16px; border-radius:50%; border:1.5px solid var(--line); flex-shrink:0; margin-top:2px;
+  position:relative; background:#fff;
+}
+.addr-select-card.is-checked .addr-select-radio{ border-color: var(--ink); }
+.addr-select-card.is-checked .addr-select-radio::after{
+  content:''; position:absolute; inset:3px; border-radius:50%; background: var(--ink);
+}
+.addr-select-body{ flex:1; min-width:0; }
+.addr-select-top{ display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap; }
+.addr-select-name{ font-size:14px; font-weight:700; color: var(--ink); }
+.addr-select-tag{
+  font-size:11px; font-weight:700; letter-spacing:0.03em; color: var(--charcoal-60);
+  background: var(--paper-2); padding:2px 8px; border-radius:4px;
+}
+.addr-select-card.is-checked .addr-select-tag{ background:#fff; }
+.addr-select-default{ font-size:11px; font-weight:700; letter-spacing:0.03em; color: var(--success); }
+.addr-select-lines{ font-size:13px; color: var(--charcoal-60); margin-bottom:3px; line-height:1.5; }
+.addr-select-phone{ font-size:12.5px; color: var(--charcoal-60); }
+
+.chk-empty-note{ font-size:13.5px; color: var(--charcoal-60); margin-bottom:16px; }
+
+#chkDeliverHereBtn{ margin-bottom:8px; }
+#chkDeliverHereBtn:disabled{ opacity:0.45; cursor:not-allowed; }
+
+.chk-add-addr-toggle{
+  display:block; background:none; border:0; color: var(--gold-dark); font-weight:700; font-size:13px;
+  padding:14px 0 4px; cursor:pointer;
+}
+
+.addr-new-form{ margin-top:14px; padding-top:18px; border-top:1px dashed var(--line); }
+.chk-addr-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:0 16px; }
+.chk-addr-span2{ grid-column: 1 / -1; }
+.chk-addr-form-actions{ display:flex; gap:14px; margin-top:6px; }
+
+/* ============ ORDER SUMMARY ============ */
+.chk-summary-items{ margin-bottom:20px; }
+.chk-summary-item{
+  display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.chk-summary-item:last-child{ border-bottom:0; }
+.chk-summary-item img{ width:44px; height:60px; object-fit:cover; border-radius:5px; flex-shrink:0; }
+.chk-summary-item-name{ flex:1; color: var(--ink); font-weight:600; }
+.chk-summary-item-qty{ color: var(--charcoal-60); flex-shrink:0; }
+.chk-summary-item-price{ font-weight:700; color: var(--ink); flex-shrink:0; width:70px; text-align:right; }
+
+/* ============ PAYMENT METHOD SELECTOR ============ */
+.chk-pay-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.chk-pay-option{
+  display:flex; align-items:center; gap:14px; padding:14px 16px;
+  border:1.5px solid var(--line); border-radius: var(--radius-m); cursor:pointer; transition: all .15s;
+}
+.chk-pay-option:hover{ border-color: var(--gold); }
+.chk-pay-option.is-active{ border-color: var(--ink); background: var(--paper-2); }
+.chk-pay-option input{ margin:0; accent-color: var(--ink); width:16px; height:16px; }
+.chk-pay-icon{ width:34px; height:34px; border-radius:8px; background: var(--paper-2); color: var(--gold-dark); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.chk-pay-option.is-active .chk-pay-icon{ background:#fff; }
+.chk-pay-icon svg{ width:18px; height:18px; }
+.chk-pay-label{ font-size:14px; font-weight:700; color: var(--ink); flex-shrink:0; width:170px; }
+.chk-pay-desc{ font-size:12.5px; color: var(--charcoal-60); }
+
+.chk-pay-detail{
+  background: var(--paper-2); border-radius: var(--radius-m); padding:20px; margin-bottom:22px;
+}
+.chk-pay-detail .field{ margin-bottom:14px; }
+.chk-pay-detail .field:last-child{ margin-bottom:0; }
+.chk-pay-detail label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:6px; color: var(--ink); }
+.chk-pay-detail input, .chk-pay-detail select{
+  width:100%; padding:10px 13px; border:1.5px solid var(--line); border-radius: var(--radius-s);
+  font-size:14px; font-family: var(--font-body); background:#fff;
+}
+.field-row-2{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+.chk-cod-note{ font-size:13px; color: var(--gold-dark); }
+.chk-error{ font-size:12.5px; color: var(--brick); margin:8px 0 0; min-height:16px; }
+
+/* ============ CONFIRMATION ============ */
+.chk-confirm-section{ padding-top:8px; }
+.chk-confirm-wrap{ text-align:center; max-width:520px; }
+.chk-success-icon{
+  width:64px; height:64px; border-radius:50%; background: var(--success); color:#fff;
+  display:flex; align-items:center; justify-content:center; margin: 0 auto 20px;
+}
+.chk-success-icon svg{ width:32px; height:32px; }
+.chk-sub{ font-size:13.5px; color: var(--charcoal-60); margin-bottom:20px; }
+.chk-confirm-address{
+  background: var(--paper-2); border-radius: var(--radius-m); padding:16px 20px; margin-bottom:24px;
+  font-size:13.5px; color: var(--charcoal); text-align:left; line-height:1.6;
+}
+.chk-confirm-actions{ display:flex; gap:16px; justify-content:center; }
+
+/* ============ PRICE DETAILS SIDEBAR ============ */
+.chk-side{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+  padding:24px; position:sticky; top:96px;
+}
+.chk-side-title{ font-size:13px; letter-spacing:0.04em; color: var(--charcoal-60); margin-bottom:18px; }
+.chk-side-row{ display:flex; justify-content:space-between; font-size:14px; color: var(--ink); padding:8px 0; }
+.chk-side-divider{ height:1px; background: var(--line); margin:6px 0; border-top:1px dashed var(--line); }
+.chk-side-total-row{ font-weight:700; font-size:16px; padding-top:12px; }
+.chk-side-secure{
+  display:flex; align-items:flex-start; gap:8px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:12px; color: var(--charcoal-60); line-height:1.5;
+}
+.chk-side-secure svg{ width:16px; height:16px; flex-shrink:0; margin-top:1px; color: var(--success); }
+
+@media (max-width: 900px){
+  .chk-layout{ grid-template-columns: 1fr; }
+  .chk-side{ position:static; }
+}
+@media (max-width: 560px){
+  .chk-block-body{ padding:20px 18px 24px; }
+  .chk-block-head{ padding:16px 18px; }
+  .chk-pay-label{ width:auto; }
+  .field-row-2, .chk-addr-grid{ grid-template-columns:1fr; }
+}

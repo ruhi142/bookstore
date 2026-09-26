@@ -1,0 +1,116 @@
+/* ==========================================================================
+   INKWELL BOOKS — category.css
+   Self-contained: includes book-card/section styles here too, since this
+   page doesn't load home.css. Redesigned to an elegant neutral look
+   (matching the About/Contact hero style) instead of a colored banner.
+   ========================================================================== */
+
+.section{ padding: 68px 0; }
+
+/* ============ CATEGORY HERO (elegant, neutral — matches About/Contact) ============ */
+.cat-hero{
+  background: radial-gradient(120% 140% at 100% 0%, #EFE8D6 0%, var(--paper) 55%);
+  padding: 34px 0 44px;
+}
+.cat-breadcrumb{
+  display:flex; align-items:center; gap:6px; margin-bottom:24px;
+  font-size:12.5px; color: var(--charcoal-60);
+}
+.cat-breadcrumb a{ color: var(--charcoal-60); }
+.cat-breadcrumb a:hover{ color: var(--ink); }
+.cat-breadcrumb svg{ width:13px; height:13px; opacity:.6; }
+.cat-breadcrumb span{ color: var(--ink); font-weight:600; }
+
+.cat-hero-row{ display:flex; align-items:center; gap:24px; }
+.cat-hero-icon{
+  width:76px; height:76px; border-radius:50%; background: var(--card); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; color: var(--gold-dark); flex-shrink:0;
+  box-shadow: var(--shadow-card);
+}
+.cat-hero-icon svg{ width:34px; height:34px; }
+.cat-count-badge{
+  display:inline-block; background: #FBF2DC; color: var(--gold-dark);
+  font-size:12px; font-weight:700; padding:5px 12px; border-radius:20px; margin-bottom:12px;
+}
+.cat-hero-row h1{ font-size:34px; margin-bottom:8px; }
+.cat-hero-row p{ color: var(--charcoal-60); font-size:14.5px; max-width:520px; line-height:1.6; }
+
+/* ============ SORT / FILTER TOOLBAR ============ */
+.cat-toolbar{ background: var(--card); border-bottom:1px solid var(--line); }
+.cat-toolbar-row{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding: 16px 24px;
+}
+.cat-filter-chips{ display:flex; gap:8px; flex-wrap:wrap; }
+.cat-chip{
+  background: var(--paper-2); border:1.5px solid transparent; color: var(--charcoal);
+  font-size:13px; font-weight:600; padding:8px 16px; border-radius:20px; transition: all .15s;
+}
+.cat-chip:hover{ border-color: var(--gold); }
+.cat-chip.is-active{ background: var(--ink); color:#fff; }
+.cat-sort{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.cat-sort label{ font-size:12.5px; color: var(--charcoal-60); font-weight:600; }
+.cat-sort select{
+  padding:8px 12px; border:1.5px solid var(--line); border-radius: var(--radius-s);
+  font-size:13px; font-family: var(--font-body); background:#fff; color: var(--charcoal);
+}
+.cat-sort select:focus{ border-color: var(--gold); outline:0; }
+
+/* ============ BOOK GRID (self-contained book-card styling) ============ */
+.cat-grid-section{ padding-top: 40px; }
+.cat-empty-msg{ text-align:center; color: var(--charcoal-60); font-size:14px; padding: 30px 0; }
+.cat-book-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+.book-card{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  padding:14px; position:relative; overflow:hidden; transition: transform .15s, box-shadow .15s;
+}
+.book-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold); z-index:1;
+}
+.book-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.book-card img{ width:100%; height:190px; object-fit:cover; border-radius: 8px; margin-bottom:12px; background:var(--paper-2); }
+.badge-sale{
+  position:absolute; top:22px; left:22px; background: var(--brick); color:#fff;
+  font-size:11px; font-weight:700; padding:4px 9px; border-radius:20px; z-index:2;
+}
+.cat-wishlist-btn{
+  position:absolute; top:20px; right:20px; z-index:2;
+  width:30px; height:30px; border-radius:50%; background: rgba(255,255,255,0.9); border:0;
+  display:flex; align-items:center; justify-content:center; color: var(--ink);
+  transition: background .15s, color .15s, transform .15s;
+}
+.cat-wishlist-btn svg{ width:15px; height:15px; }
+.cat-wishlist-btn:hover{ transform: scale(1.08); }
+.cat-wishlist-btn.is-saved{ background: var(--brick); color:#fff; }
+.cat-wishlist-btn.is-saved svg{ fill: currentColor; }
+.book-card h4{ font-size:14.5px; margin-bottom:2px; line-height:1.3; }
+.book-card .author{ font-size:12px; color: var(--charcoal-60); display:block; margin-bottom:6px; }
+.cat-condition-tag{
+  display:inline-block; font-size:10.5px; font-weight:700; color: var(--gold-dark);
+  background: #FBF2DC; padding:2px 9px; border-radius:10px; margin-bottom:10px;
+}
+.price-row{ display:flex; align-items:baseline; gap:8px; margin-bottom:10px; }
+.price-now{ font-family: var(--font-mono); font-weight:700; font-size:16px; color: var(--ink); }
+.price-old{ font-family: var(--font-mono); font-size:12.5px; color:#9C9385; text-decoration: line-through; }
+.btn-add-cart{
+  width:100%; background: var(--paper-2); color: var(--ink); border:1.5px solid transparent;
+  padding:9px; border-radius: var(--radius-s); font-size:13px; font-weight:700; transition: all .15s;
+}
+.btn-add-cart:hover{ background: var(--ink); color:#fff; }
+.btn-add-cart.is-added{ background: var(--success); color:#fff; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1080px){
+  .cat-book-grid{ grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width: 900px){
+  .cat-toolbar-row{ flex-direction:column; align-items:flex-start; }
+}
+@media (max-width: 640px){
+  .cat-book-grid{ grid-template-columns: repeat(2,1fr); }
+  .cat-hero-row h1{ font-size:26px; }
+  .cat-hero-row{ gap:14px; }
+  .cat-hero-icon{ width:56px; height:56px; }
+  .cat-hero-icon svg{ width:26px; height:26px; }
+}

@@ -1,0 +1,153 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}About Us — Inkwell Books{% endblock %}
+{% block meta_description %}The story behind Inkwell Books — why we started, what we believe, and how we get the right book to the right reader.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ============ ABOUT HERO ============ -->
+<section class="about-hero">
+  <div class="container about-hero-row">
+    <div class="about-hero-copy">
+      <span class="eyebrow">Our Story</span>
+      <h1>Books deserve a shelf<br>that actually knows you.</h1>
+      <p>Inkwell Books started with a simple frustration: browsing for a book online felt like scrolling a warehouse catalogue, not walking into a bookstore. So we built one — new titles, quality-checked pre-loved copies, and a little AI help when you're not sure what you're in the mood for.</p>
+    </div>
+    <div class="about-hero-visual">
+      <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=520&q=80" alt="Shelves of books in a bookstore">
+      <div class="about-hero-card">
+        <strong>Est. 2023</strong>
+        <span>Kolkata, India</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS STRIP ============ -->
+<section class="about-stats-strip">
+  <div class="container about-stats-row">
+    <div class="about-stat"><strong>40,000+</strong><span>Titles listed</span></div>
+    <div class="about-stat"><strong>2 Lakh+</strong><span>Orders delivered</span></div>
+    <div class="about-stat"><strong>600+</strong><span>Pin codes served</span></div>
+    <div class="about-stat"><strong>4.8 / 5</strong><span>Average reader rating</span></div>
+  </div>
+</section>
+
+<!-- ============ MISSION & VALUES ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">What We Believe</span>
+      <h2>Four ideas run through everything we build</h2>
+    </div>
+    <div class="values-grid">
+      <article class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z"/></svg>
+        </div>
+        <h3>Curated, not just catalogued</h3>
+        <p>Every category is shaped by actual reading trends and reviews — not just what has the highest margin. If it's on the shelf, someone here would recommend it.</p>
+      </article>
+      <article class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Fair, transparent pricing</h3>
+        <p>The price you see on a listing is the price you pay — discounts are shown as real cuts off MRP, never inflated first and "discounted" after.</p>
+      </article>
+      <article class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        </div>
+        <h3>Security by default</h3>
+        <p>Every checkout is OTP-verified and every order is trackable end to end. We treat "trustworthy" as a feature we owe you, not an add-on.</p>
+      </article>
+      <article class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.4-9.5 9-9.5 9z"/></svg>
+        </div>
+        <h3>A second life for good books</h3>
+        <p>Our pre-loved section is graded and photographed honestly, so a book gets read again instead of sitting shut on someone's shelf.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section how-section">
+  <div class="container">
+    <div class="section-head section-head-light">
+      <span class="eyebrow eyebrow-light">How Inkwell Works</span>
+      <h2>From "what should I read next" to your doorstep</h2>
+    </div>
+    <div class="how-row">
+      <div class="how-step">
+        <span class="how-num">01</span>
+        <h4>Ask, browse, or let the assistant pick</h4>
+        <p>Search by title, walk the category shelf, or tell our AI assistant your mood — it'll shortlist titles in seconds.</p>
+      </div>
+      <div class="how-connector" aria-hidden="true"></div>
+      <div class="how-step">
+        <span class="how-num">02</span>
+        <h4>Checkout, verified by OTP</h4>
+        <p>Add to cart, choose UPI, card or COD, and confirm with a one-time password sent to your phone before payment is processed.</p>
+      </div>
+      <div class="how-connector" aria-hidden="true"></div>
+      <div class="how-step">
+        <span class="how-num">03</span>
+        <h4>Track it, every step</h4>
+        <p>From "packed" to "out for delivery," your order status page updates live — no guessing where your book is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">The People Behind It</span>
+      <h2>A small team, a lot of reading</h2>
+    </div>
+    <div class="team-grid">
+      <article class="team-card">
+        <img src="{% static 'core/img/founder.jpeg' %}" alt="Parama Saha">
+        <h4>Parama Saha</h4>
+        <span>Founder &amp; Curation Lead</span>
+      </article>
+      <article class="team-card">
+        <img src="{% static 'core/img/engineer.jpeg' %}" alt="Sambit Mukherjee">
+        <h4>Sambit Mukherjee</h4>
+        <span>Engineering &amp; AI</span>
+      </article>
+      <article class="team-card">
+        <img src="{% static 'core/img/logistic.jpeg' %}" alt="Oindrilla Ghosh">
+        <h4>Oindrilla Ghosh</h4>
+        <span>Logistics &amp; Fulfilment</span>
+      </article>
+      <article class="team-card">
+        <img src="{% static 'core/img/customer.jpeg' %}" alt="SK Sakil">
+        <h4>SK Sakil</h4>
+        <span>Customer Experience</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="about-cta">
+  <div class="container about-cta-inner">
+    <div>
+      <h2>Still deciding what to read next?</h2>
+      <p>Open the chat assistant in the corner — tell it a genre, mood or even just a vibe.</p>
+    </div>
+    <a href="{% url 'catalog:category_listing' 'fiction' %}" class="btn-hero-primary">Start Browsing</a>
+  </div>
+</section>
+
+{% endblock %}

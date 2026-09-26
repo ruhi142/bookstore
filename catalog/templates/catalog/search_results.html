@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{% if query %}Search: {{ query }}{% else %}Search{% endif %} — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'catalog/css/category.css' %}">
+<link rel="stylesheet" href="{% static 'catalog/css/search.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="cat-hero">
+  <div class="container">
+    <div class="cat-breadcrumb">
+      <a href="{% url 'core:home' %}">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Search</span>
+    </div>
+    <div class="cat-hero-row">
+      <div class="cat-hero-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <div>
+        {% if query %}
+          <span class="cat-count-badge">{{ results|length }} result{{ results|length|pluralize }}</span>
+          <h1>Results for "{{ query }}"</h1>
+          <p>Showing titles and authors matching your search across every category.</p>
+        {% else %}
+          <h1>Search Inkwell Books</h1>
+          <p>Use the search bar above to find a book by title, author or ISBN.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section cat-grid-section">
+  <div class="container">
+    {% if query and not results %}
+    <div class="search-empty">
+      <div class="search-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <h3>No titles found for "{{ query }}"</h3>
+      <p>Try a different spelling, or browse a category instead.</p>
+      <a href="{% url 'catalog:category_listing' 'fiction' %}" class="btn-hero-primary">Browse Fiction</a>
+    </div>
+    {% elif results %}
+    <div class="cat-book-grid">
+      {% for book in results %}
+      <article class="book-card"
+        data-id="{{ book.id }}" data-price="{{ book.price }}" data-img="{{ book.img_url }}"
+        data-title="{{ book.title }}" data-author="{{ book.author }}" data-old-price="{{ book.old_price }}">
+        <span class="badge-sale">-{{ book.discount }}%</span>
+        <button class="cat-wishlist-btn" type="button" aria-label="Add to wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <a href="{% url 'catalog:book_detail' book.id %}" class="book-card-link">
+          <img src="{{ book.img_url_small }}" alt="{{ book.title }} cover">
+          <span class="search-cat-tag">{{ book.category_title }}</span>
+          <h4>{{ book.title }}</h4>
+          <span class="author">{{ book.author }}</span>
+        </a>
+        <div class="price-row">
+          <span class="price-now">₹{{ book.price }}</span>
+          <span class="price-old">₹{{ book.old_price }}</span>
+        </div>
+        <button class="btn-add-cart">Add to Cart</button>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'catalog/js/search.js' %}"></script>
+{% endblock %}

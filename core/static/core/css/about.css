@@ -1,0 +1,116 @@
+/* ==========================================================================
+   INKWELL BOOKS — about.css
+   ========================================================================== */
+
+/* ============ ABOUT HERO ============ */
+.about-hero{
+  background: radial-gradient(120% 140% at 100% 0%, #EFE8D6 0%, var(--paper) 55%);
+  padding: 60px 0 70px;
+}
+.about-hero-row{ display:grid; grid-template-columns: 1fr 0.9fr; gap:56px; align-items:center; }
+.about-hero-copy h1{ font-size:44px; line-height:1.15; margin:16px 0 20px; }
+.about-hero-copy p{ font-size:15.5px; color: var(--charcoal-60); line-height:1.75; max-width:480px; }
+.about-hero-visual{ position:relative; }
+.about-hero-visual img{
+  width:100%; height:380px; object-fit:cover; border-radius: var(--radius-l);
+  box-shadow: var(--shadow-pop);
+}
+.about-hero-card{
+  position:absolute; left:-24px; bottom:-24px;
+  background: var(--card); border-radius: var(--radius-m); box-shadow: var(--shadow-pop);
+  padding:16px 22px; display:flex; flex-direction:column; gap:2px;
+}
+.about-hero-card strong{ font-family: var(--font-display); font-size:18px; color: var(--ink); }
+.about-hero-card span{ font-size:12px; color: var(--charcoal-60); }
+
+/* ============ STATS STRIP ============ */
+.about-stats-strip{ background: var(--ink); }
+.about-stats-row{
+  display:grid; grid-template-columns: repeat(4,1fr);
+  padding: 34px 0;
+}
+.about-stat{ text-align:center; border-left:1px solid rgba(255,255,255,0.12); }
+.about-stat:first-child{ border-left:0; }
+.about-stat strong{ font-family: var(--font-mono); font-size:26px; color: var(--gold); display:block; margin-bottom:4px; }
+.about-stat span{ font-size:12.5px; color:#B9C7BC; }
+
+/* extra gap above "What We Believe" (right after the green stats strip) */
+.about-stats-strip + .section{ padding-top: 70px; }
+
+/* extra gap between every section heading and the boxes/content below it */
+.section-head{ margin-bottom: 40px; }
+
+/* ============ VALUES GRID ============ */
+.section-head .eyebrow{ margin-bottom:12px; }
+.values-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+.value-card{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  padding:28px 22px; transition: transform .15s, box-shadow .15s;
+}
+.value-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.value-icon{
+  width:46px; height:46px; border-radius:50%; background: var(--paper-2); color: var(--gold-dark);
+  display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+}
+.value-icon svg{ width:22px; height:22px; }
+.value-card h3{ font-size:16px; margin-bottom:8px; line-height:1.35; }
+.value-card p{ font-size:13px; color: var(--charcoal-60); line-height:1.6; }
+
+/* ============ HOW IT WORKS ============ */
+.how-section .section-head{ margin-bottom: 60px; }
+.how-section{ background: linear-gradient(165deg, var(--ink), #0F2019); padding-top: 60px; padding-bottom: 80px; margin-top: 60px; }
+.how-row{ display:flex; align-items:flex-start; gap:0; }
+.how-step{ flex:1; padding: 0 18px; }
+.how-num{
+  font-family: var(--font-mono); font-size:13px; font-weight:700; color: var(--ink);
+  background: var(--gold); width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+}
+.how-step h4{ color:#fff; font-size:17px; margin-bottom:10px; line-height:1.35; }
+.how-step p{ color:#B9C7BC; font-size:13.5px; line-height:1.65; }
+.how-connector{
+  width:80px; height:1px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.3) 0 6px, transparent 6px 12px);
+  margin-top:17px; flex-shrink:0;
+}
+
+/* extra gap between the green how-section and the white Team section right after it */
+.how-section + .section{ padding-top: 70px; }
+
+/* ============ TEAM ============ */
+.team-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:22px; margin-bottom: 90px; }
+.team-card{ text-align:center; }
+.team-card img{
+  width:100%; aspect-ratio:1/1; object-fit:cover; border-radius: var(--radius-m);
+  margin-bottom:14px; box-shadow: var(--shadow-card);
+}
+.team-card h4{ font-size:15px; margin-bottom:3px; }
+.team-card span{ font-size:12.5px; color: var(--charcoal-60); }
+
+/* ============ CTA BANNER ============ */
+.about-cta{ background: var(--gold); margin-top: 70px; }
+.about-cta-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding: 48px 24px;
+}
+.about-cta h2{ font-size:26px; color: var(--ink); margin-bottom:6px; }
+.about-cta p{ font-size:14px; color:#5C4A21; }
+.about-cta .btn-hero-primary{ flex-shrink:0; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1080px){
+  .values-grid{ grid-template-columns: repeat(2,1fr); }
+  .team-grid{ grid-template-columns: repeat(2,1fr); }
+  .how-row{ flex-direction:column; gap:28px; }
+  .how-connector{ display:none; }
+}
+@media (max-width: 900px){
+  .about-hero-row{ grid-template-columns:1fr; }
+  .about-hero-visual{ display:none; }
+  .about-hero-copy h1{ font-size:32px; }
+  .about-stats-row{ grid-template-columns: repeat(2,1fr); row-gap:24px; }
+  .about-stat:nth-child(3){ border-left:0; }
+}
+@media (max-width: 640px){
+  .values-grid, .team-grid{ grid-template-columns: 1fr; }
+  .about-cta-inner{ flex-direction:column; align-items:flex-start; }
+}

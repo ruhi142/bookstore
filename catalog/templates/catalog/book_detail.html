@@ -1,0 +1,271 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ book.title }} — {{ book.author }} | Inkwell Books{% endblock %}
+{% block meta_description %}Buy {{ book.title }} by {{ book.author }} at Inkwell Books — {{ book.condition }} copy, ₹{{ book.price }}.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'catalog/css/book_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="bd-wrap">
+  <div class="container">
+
+    <!-- ============ BREADCRUMB ============ -->
+    <div class="bd-breadcrumb">
+      <a href="{% url 'core:home' %}">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      {% if book.category_slug == "bestsellers" %}
+      <a href="{% url 'core:home' %}#bestsellers">{{ book.category_title }}</a>
+      {% else %}
+      <a href="{% url 'catalog:category_listing' book.category_slug %}">{{ book.category_title }}</a>
+      {% endif %}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>{{ book.title }}</span>
+    </div>
+
+    <!-- ============ MAIN PRODUCT ROW ============ -->
+    <div class="bd-main">
+
+      <!-- ---- GALLERY ---- -->
+      <div class="bd-gallery">
+        <div class="bd-thumb-rail" id="bdThumbRail">
+          <button class="bd-thumb is-active" data-view="front" type="button">
+            <img src="{{ book.img_url_small }}" alt="{{ book.title }} front cover">
+          </button>
+        </div>
+        <div class="bd-main-image">
+          <img src="{{ book.img_url }}" alt="{{ book.title }} cover" id="bdMainImg">
+          <div class="bd-back-panel" id="bdBackPanel">
+            <p class="bd-back-eyebrow">{{ book.category_title }}</p>
+            <p>{{ book.title }}</p>
+            <p class="bd-back-author">{{ book.author }}</p>
+            <p class="bd-back-note">Condition: {{ book.condition }} · {{ book.pages }} pages</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---- INFO ---- -->
+      <div class="bd-info">
+        <div class="bd-title-row">
+          <h1>{{ book.title }}</h1>
+          <div class="bd-title-actions">
+            <button class="bd-icon-btn" id="bdWishBtn" type="button" aria-label="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </button>
+            <button class="bd-icon-btn" id="bdShareBtn" type="button" aria-label="Share">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-3.8M8.6 13.4l6.8 3.8"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <a href="{% url 'catalog:search' %}?q={{ book.author|urlencode }}" class="bd-author-link">{{ book.author }}</a>
+
+        <div class="bd-rating-row">
+          <span class="bd-stars" aria-hidden="true">
+            {% for s in book.rating_full_stars %}★{% endfor %}{% if book.rating_has_half %}✩{% endif %}
+          </span>
+          <span class="bd-rating-num">{{ book.rating }}</span>
+          <a href="#bdReviews" class="bd-reviews-link">{{ book.reviews }} reviews</a>
+          <span class="bd-sep">|</span>
+          <span class="bd-question-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a7 7 0 0 0-7 7v3a2 2 0 0 0 2 2h1v-6a4 4 0 0 1 8 0v6h1a2 2 0 0 0 2-2v-3a7 7 0 0 0-7-7z"/></svg>
+            Ask a question
+          </span>
+        </div>
+
+        <div class="bd-tags">
+          {% for tag in book.tags %}<span class="bd-tag">{{ tag }}</span>{% endfor %}
+          <span class="bd-tag bd-tag-condition">{{ book.condition }}</span>
+        </div>
+
+        <div class="bd-price-row">
+          <span class="bd-mrp">MRP: <s>₹{{ book.old_price }}</s></span>
+          <span class="bd-price-now">₹{{ book.price }}</span>
+          {% if book.savings %}<span class="bd-off-badge">₹{{ book.savings }} Off</span>{% endif %}
+        </div>
+        <div class="bd-price-sub">
+          {% if book.discount %}<span class="bd-discount-pct">{{ book.discount }}% off</span> · {% endif %}
+          <span>(Incl. of all taxes)</span>
+        </div>
+
+        <div class="bd-buy-row">
+          <div class="bd-qty" id="bdQty">
+            <button type="button" data-step="-1" aria-label="Decrease quantity">−</button>
+            <span id="bdQtyVal">1</span>
+            <button type="button" data-step="1" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="bd-btn-bag" id="bdAddToBag" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+            Add to Bag
+          </button>
+          <a href="{% url 'cart:checkout' %}?buynow=1" class="bd-btn-buy" id="bdBuyNow">
+            Buy Now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+
+        <!-- ---- DELIVERY CHECK ---- -->
+        <div class="bd-delivery-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="17.5" cy="18" r="1.5"/></svg>
+          <div class="bd-delivery-form">
+            <label for="bdPincode">Check delivery time &amp; availability</label>
+            <div class="bd-delivery-input-row">
+              <input type="text" id="bdPincode" maxlength="6" placeholder="Enter pincode" inputmode="numeric">
+              <button type="button" id="bdPincodeCheck">Check</button>
+            </div>
+            <p class="bd-delivery-result" id="bdDeliveryResult"></p>
+          </div>
+        </div>
+
+        <!-- ---- TRUST STRIP ---- -->
+        <div class="bd-trust-row">
+          <div class="bd-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            Secure Checkout
+          </div>
+          <div class="bd-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>
+            7-Day Returns
+          </div>
+          <div class="bd-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            {{ book.condition }} Copy
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DESCRIPTION + DETAILS ============ -->
+    <div class="bd-lower">
+      <div class="bd-lower-main">
+        <h3>About this book</h3>
+        <p class="bd-description">
+          {{ book.title }} by {{ book.author }} is a {{ book.category_title|lower }} title readers keep coming back to
+          — {{ book.tags.0|lower }} and {{ book.tags.1|lower }} run through every chapter. This is a {{ book.condition|lower }}
+          copy, {{ book.pages }} pages, delivered pan-India with the same order tracking as everything else on Inkwell.
+        </p>
+
+        <h3>Book Details</h3>
+        <table class="bd-details-table">
+          <tbody>
+            <tr><th>Author</th><td>{{ book.author }}</td></tr>
+            <tr><th>Publisher</th><td>{{ book.publisher }}</td></tr>
+            <tr><th>Language</th><td>English</td></tr>
+            <tr><th>Binding</th><td>Paperback</td></tr>
+            <tr><th>Pages</th><td>{{ book.pages }}</td></tr>
+            <tr><th>Condition</th><td>{{ book.condition }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bd-lower-side">
+        <h4>Offers For You</h4>
+        <ul class="bd-offers-list">
+          <li><strong>Bank Offer:</strong> 10% instant discount on select cards</li>
+          <li><strong>Bundle Offer:</strong> Up to 30% off on 2+ books</li>
+          <li><strong>No-Cost EMI:</strong> available on orders above ₹1000</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ RELATED BOOKS ============ -->
+    {% if related %}
+    <div class="bd-related">
+      <h3>You May Also Like</h3>
+      <div class="bd-related-grid" id="bdRelatedGrid">
+        {% for rbook in related %}
+        <article class="book-card"
+          data-id="{{ rbook.id }}" data-title="{{ rbook.title }}" data-author="{{ rbook.author }}"
+          data-price="{{ rbook.price }}" data-old-price="{{ rbook.old_price }}" data-img="{{ rbook.img_url }}">
+          {% if rbook.discount %}<span class="badge-sale">-{{ rbook.discount }}%</span>{% endif %}
+          <button class="cat-wishlist-btn" type="button" aria-label="Add to wishlist">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          </button>
+          <a href="{% url 'catalog:book_detail' rbook.id %}" class="book-card-link">
+            <img src="{{ rbook.img_url_small }}" alt="{{ rbook.title }} cover">
+            <h4>{{ rbook.title }}</h4>
+            <span class="author">{{ rbook.author }}</span>
+          </a>
+          <div class="price-row">
+            <span class="price-now">₹{{ rbook.price }}</span>
+            <span class="price-old">₹{{ rbook.old_price }}</span>
+          </div>
+          <button class="btn-add-cart">Add to Cart</button>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ============ RATINGS & REVIEWS ============ -->
+    <div class="bd-reviews-section" id="bdReviews">
+      <h3>Ratings &amp; Reviews</h3>
+
+      <div class="bd-reviews-summary">
+        <div class="bd-reviews-score">
+          <strong id="bdReviewAvg">{{ book.rating }}</strong>
+          <span class="bd-stars" aria-hidden="true">{% for s in book.rating_full_stars %}★{% endfor %}{% if book.rating_has_half %}✩{% endif %}</span>
+          <span id="bdReviewCount">{{ book.reviews }} reviews</span>
+        </div>
+        <p>Reader feedback for this title is overwhelmingly positive — most reviews call out the pacing and
+          {{ book.tags.0|lower }}.</p>
+      </div>
+
+      <div class="bd-review-list" id="bdReviewList">
+        {% for review in book.sample_reviews %}
+        <div class="bd-review-item">
+          <div class="bd-review-head">
+            <span class="bd-review-avatar">{{ review.initial }}</span>
+            <div class="bd-review-who">
+              <strong>{{ review.name }}</strong>
+              <span class="bd-review-stars" aria-hidden="true">{% for s in review.stars %}★{% endfor %}</span>
+            </div>
+            <span class="bd-review-date">{{ review.date }}</span>
+          </div>
+          <p class="bd-review-text">{{ review.text }}</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- ---- WRITE YOUR OWN REVIEW ---- -->
+      <div class="bd-write-review">
+        <h4>Write a Review</h4>
+        <p class="bd-write-review-sub">Share what you thought of this book with other readers.</p>
+        <form id="bdReviewForm" novalidate>
+          <div class="bd-review-star-input" id="bdReviewStarInput" data-value="0" role="radiogroup" aria-label="Your rating">
+            <button type="button" class="bd-star-btn" data-val="1" aria-label="1 star">★</button>
+            <button type="button" class="bd-star-btn" data-val="2" aria-label="2 stars">★</button>
+            <button type="button" class="bd-star-btn" data-val="3" aria-label="3 stars">★</button>
+            <button type="button" class="bd-star-btn" data-val="4" aria-label="4 stars">★</button>
+            <button type="button" class="bd-star-btn" data-val="5" aria-label="5 stars">★</button>
+            <span class="bd-review-star-hint" id="bdReviewStarHint">Tap to rate</span>
+          </div>
+          <div class="bd-review-form-row">
+            <input type="text" id="bdReviewName" placeholder="Your name" maxlength="40" required>
+          </div>
+          <div class="bd-review-form-row">
+            <textarea id="bdReviewText" placeholder="What did you like or dislike about this book?" maxlength="600" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="bd-btn-submit-review">Submit Review</button>
+          <p class="bd-review-msg" id="bdReviewMsg" role="status"></p>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.BD_BOOK = {
+    id: "{{ book.id }}", title: "{{ book.title|escapejs }}", author: "{{ book.author|escapejs }}",
+    price: {{ book.price }}, old_price: {{ book.old_price }}, img: "{{ book.img_url }}"
+  };
+</script>
+<script src="{% static 'catalog/js/book_detail.js' %}?v=2"></script>
+{% endblock %}

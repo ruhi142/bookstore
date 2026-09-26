@@ -1,0 +1,271 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Checkout — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'cart/css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if not user.is_authenticated %}
+<section class="section" style="text-align:center; padding:100px 24px;">
+  <h1 style="font-size:28px; margin-bottom:12px;">Please log in to checkout</h1>
+  <p style="color:var(--charcoal-60); margin-bottom:24px;">Your order needs to be linked to an account so you can track it and see it in My Orders.</p>
+  <a href="{% url 'core:home' %}" class="btn-hero-primary">Back to Home &amp; Log In</a>
+</section>
+{% else %}
+
+<section class="chk-hero">
+  <div class="container">
+    <h1 class="chk-page-title">Checkout</h1>
+    <ol class="chk-track" id="chkTrack">
+      <li class="chk-track-step is-active" data-track-step="address">
+        <span class="chk-track-circle">
+          <span class="chk-track-num">1</span>
+          <svg class="chk-track-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <span class="chk-track-label">Address</span>
+      </li>
+      <li class="chk-track-line"></li>
+      <li class="chk-track-step" data-track-step="summary">
+        <span class="chk-track-circle">
+          <span class="chk-track-num">2</span>
+          <svg class="chk-track-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <span class="chk-track-label">Order Summary</span>
+      </li>
+      <li class="chk-track-line"></li>
+      <li class="chk-track-step" data-track-step="payment">
+        <span class="chk-track-circle">
+          <span class="chk-track-num">3</span>
+          <svg class="chk-track-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <span class="chk-track-label">Payment</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section chk-section" id="chkLayoutSection">
+  <div class="container chk-layout">
+
+    <div class="chk-main">
+
+      <!-- ===== LOGIN (always satisfied once this page renders) ===== -->
+      <div class="chk-block is-done" id="chkBlockLogin">
+        <div class="chk-block-head">
+          <span class="chk-block-num chk-block-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <div class="chk-block-headtext">
+            <span class="chk-block-title">LOGIN</span>
+            <span class="chk-block-donetext">{{ user.get_full_name|default:user.username }} &lt;{{ user.email }}&gt;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP: DELIVERY ADDRESS ===== -->
+      <div class="chk-block chk-step-page is-active" id="chkBlockAddress" data-step="address">
+        <div class="chk-block-head">
+          <span class="chk-block-num">2</span>
+          <div class="chk-block-headtext"><span class="chk-block-title">DELIVERY ADDRESS</span></div>
+        </div>
+
+        <div class="chk-block-body" id="chkAddressBody">
+
+          <div class="addr-select-list" id="addrSelectList">
+            {% for addr in addresses %}
+            <label class="addr-select-card {% if addr.is_default %}is-checked{% endif %}" data-id="{{ addr.id }}">
+              <input type="radio" name="deliveryAddr" value="{{ addr.id }}" {% if addr.is_default %}checked{% endif %}
+                data-name="{{ addr.full_name }}" data-phone="{{ addr.phone }}" data-label="{{ addr.label }}"
+                data-line1="{{ addr.line1 }}" data-line2="{{ addr.line2 }}" data-city="{{ addr.city }}"
+                data-state="{{ addr.state }}" data-pincode="{{ addr.pincode }}">
+              <span class="addr-select-radio"></span>
+              <div class="addr-select-body">
+                <div class="addr-select-top">
+                  <span class="addr-select-name">{{ addr.full_name }}</span>
+                  <span class="addr-select-tag">{{ addr.label }}</span>
+                  {% if addr.is_default %}<span class="addr-select-default">DEFAULT</span>{% endif %}
+                </div>
+                <p class="addr-select-lines">{{ addr.line1 }}{% if addr.line2 %}, {{ addr.line2 }}{% endif %}, {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}</p>
+                <p class="addr-select-phone">Phone: {{ addr.phone }}</p>
+              </div>
+            </label>
+            {% endfor %}
+          </div>
+
+          <p class="chk-empty-note" id="chkNoAddrNote" {% if addresses %}style="display:none;"{% endif %}>
+            You don't have a saved address yet — add one below to continue.
+          </p>
+
+          <button type="button" class="btn-hero-primary" id="chkDeliverHereBtn" {% if not addresses %}disabled{% endif %}>Deliver Here</button>
+
+          <button type="button" class="chk-add-addr-toggle" id="toggleAddAddrChk">+ Add a new address</button>
+
+          <form class="addr-new-form" id="addAddrFormChk" style="display:none;">
+            <div class="chk-addr-grid">
+              <div class="field">
+                <label>Label</label>
+                <select name="label" id="chkAddrLabel">
+                  <option value="Home">Home</option>
+                  <option value="Work">Work</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Full Name</label>
+                <input type="text" name="full_name" id="chkAddrFullName" required>
+              </div>
+              <div class="field">
+                <label>Phone</label>
+                <input type="tel" name="addr_phone" id="chkAddrPhone" required>
+              </div>
+              <div class="field">
+                <label>Pincode</label>
+                <input type="text" name="pincode" id="chkAddrPincode" maxlength="6" required>
+              </div>
+              <div class="field chk-addr-span2">
+                <label>Address Line 1</label>
+                <input type="text" name="line1" id="chkAddrLine1" required>
+              </div>
+              <div class="field chk-addr-span2">
+                <label>Address Line 2 (optional)</label>
+                <input type="text" name="line2" id="chkAddrLine2">
+              </div>
+              <div class="field">
+                <label>City</label>
+                <input type="text" name="city" id="chkAddrCity" required>
+              </div>
+              <div class="field">
+                <label>State</label>
+                <input type="text" name="state" id="chkAddrState" required>
+              </div>
+            </div>
+            <p class="chk-error" id="chkAddrFormError"></p>
+            <div class="chk-addr-form-actions">
+              <button type="submit" class="btn-hero-primary" id="chkAddrSaveBtn">Save and Deliver Here</button>
+              <button type="button" class="btn-hero-ghost" id="chkCancelAddAddrBtn">Cancel</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- ===== STEP: ORDER SUMMARY ===== -->
+      <div class="chk-block chk-step-page" id="chkBlockSummary" data-step="summary">
+        <div class="chk-block-head">
+          <span class="chk-block-num">3</span>
+          <div class="chk-block-headtext"><span class="chk-block-title">ORDER SUMMARY</span></div>
+        </div>
+        <div class="chk-block-body">
+          <!-- Confirmed delivery address recap, Flipkart-style -->
+          <div class="chk-block-donebar" id="chkAddressRecap">
+            <div class="chk-donebar-text">
+              <strong id="chkRecapName"></strong>
+              <span id="chkRecapLines"></span>
+            </div>
+            <button type="button" class="chk-change-btn" id="chkChangeAddrBtn">CHANGE</button>
+          </div>
+          <div id="chkSummaryItems" class="chk-summary-items"></div>
+          <button type="button" class="btn-hero-primary" id="chkContinueBtn">Continue</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP: PAYMENT OPTIONS ===== -->
+      <div class="chk-block chk-step-page" id="chkBlockPayment" data-step="payment">
+        <div class="chk-block-head">
+          <span class="chk-block-num">4</span>
+          <div class="chk-block-headtext"><span class="chk-block-title">PAYMENT OPTIONS</span></div>
+        </div>
+        <div class="chk-block-body">
+
+          <div class="chk-pay-options" id="chkPayOptions">
+            <label class="chk-pay-option is-active">
+              <input type="radio" name="paymethod" value="razorpay" checked>
+              <span class="chk-pay-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+              <span class="chk-pay-label">Pay Online</span>
+              <span class="chk-pay-desc">UPI, Cards, Net Banking, Wallets — via Razorpay</span>
+            </label>
+            <label class="chk-pay-option">
+              <input type="radio" name="paymethod" value="cod">
+              <span class="chk-pay-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3"/><path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg></span>
+              <span class="chk-pay-label">Cash on Delivery</span>
+              <span class="chk-pay-desc">Pay when it arrives</span>
+            </label>
+          </div>
+
+          <div class="chk-pay-detail" id="chkDetailRazorpay">
+            <p class="chk-cod-note">You'll be taken to Razorpay's secure checkout to pay by UPI, card, net banking or wallet — whichever you prefer, right there.</p>
+          </div>
+          <div class="chk-pay-detail" id="chkDetailCod" style="display:none;">
+            <p class="chk-cod-note">A small cash handling fee of ₹20 applies to Cash on Delivery orders.</p>
+          </div>
+
+          <button class="btn-primary" id="chkPayBtn">Pay &amp; Place Order</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Price details sidebar -->
+    <aside class="chk-side">
+      <h3 class="chk-side-title">PRICE DETAILS</h3>
+      <div class="chk-side-row">
+        <span>Price (<span id="chkItemCount">0</span> item<span id="chkItemPlural">s</span>)</span>
+        <span id="chkSidePrice">₹0</span>
+      </div>
+      <div class="chk-side-row">
+        <span>Delivery Charges</span>
+        <span id="chkSideDelivery">Free</span>
+      </div>
+      <div class="chk-side-divider"></div>
+      <div class="chk-side-row chk-side-total-row">
+        <span>Total Payable</span>
+        <span id="chkSideTotal">₹0</span>
+      </div>
+      <div class="chk-side-secure">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Safe and Secure Payments. 100% authentic books.
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ===== CONFIRMATION (replaces the layout above once paid) ===== -->
+<section class="section chk-confirm-section" id="chkConfirmSection" style="display:none;">
+  <div class="container chk-confirm-wrap">
+    <div class="chk-success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2>Order placed successfully</h2>
+    <p class="chk-sub">Your order ID is <strong id="chkOrderId"></strong>.</p>
+    <div class="chk-confirm-address" id="chkConfirmAddress"></div>
+    <div class="chk-confirm-actions">
+      <a href="{% url 'orders:track_order' %}" class="btn-hero-primary">Track Order</a>
+      <a href="#" id="chkDownloadInvoiceBtn" class="btn-hero-ghost" target="_blank" rel="noopener">Download Invoice</a>
+      <a href="{% url 'core:home' %}" class="btn-hero-ghost">Back to Home</a>
+    </div>
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if user.is_authenticated %}
+<!-- Razorpay's own Checkout script — must load from their CDN, it can't be
+     self-hosted/bundled (it talks to their servers to open the popup). -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  // The Key ID is public by design (it identifies your account to Razorpay,
+  // it doesn't authorize anything by itself) — safe to expose client-side.
+  // The Key SECRET must never appear here; it only ever lives in settings.py
+  // / the server environment and is used server-side in cart/views.py.
+  window.RAZORPAY_KEY_ID = "{{ razorpay_key_id }}";
+</script>
+{% endif %}
+<script src="{% static 'cart/js/checkout.js' %}?v=6"></script>
+{% endblock %}

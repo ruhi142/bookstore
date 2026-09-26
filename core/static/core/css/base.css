@@ -1,0 +1,397 @@
+/* ==========================================================================
+   INKWELL BOOKS — base.css
+   Shared design tokens + header + footer + auth modal shell.
+   Loaded on every page, before the page's own stylesheet.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; font-weight:700; color: var(--gold-dark);
+  background: #FBF2DC; padding:6px 12px; border-radius:20px; margin-bottom:18px;
+}
+.eyebrow-light{ background: rgba(255,255,255,0.12); color:#EFD9A0; }
+.section-head-light h2{ color:#fff; }
+.section-head-light p{ color:#B9C7BC; }
+
+:root{
+  
+  /* ---- color tokens ---- */
+  --ink:        #16302A;   /* deep forest ink green — header, nav, dark sections */
+  --ink-2:      #1F433A;   /* lighter ink, hover states */
+  --paper:      #F6F1E4;   /* warm ivory page background */
+  --paper-2:    #EFE8D6;   /* slightly deeper ivory, section bands */
+  --card:       #FFFDF8;   /* card surfaces */
+  --gold:       #C89B3C;   /* accent — CTAs, prices, active states */
+  --gold-dark:  #A87F2C;
+  --brick:      #A63D40;   /* sale badges, discount tags */
+  --charcoal:   #2A2622;   /* body text */
+  --charcoal-60:#2A262299;
+  --line:       #DED4B9;   /* hairline borders on paper */
+  --success:    #3D7A54;
+
+  /* ---- type ---- */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, Segoe UI, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* ---- layout ---- */
+  --maxw: 1240px;
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  --shadow-card: 0 1px 2px rgba(22,48,42,0.06), 0 8px 24px rgba(22,48,42,0.08);
+  --shadow-pop: 0 12px 40px rgba(22,48,42,0.22);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--charcoal);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family: inherit; cursor:pointer; }
+ul{ margin:0; padding:0; list-style:none; }
+h1,h2,h3,h4{ font-family: var(--font-display); margin:0; font-weight:600; color: var(--ink); }
+.container{ max-width: var(--maxw); margin:0 auto; padding: 0 24px; }
+
+/* Shared across every page that shows a .book-card: wraps the image +
+   title so the whole thing links to the book's detail page, without
+   introducing a wrapper box that would break the card's existing
+   flex/grid layout (children lay out exactly as if the <a> weren't there). */
+.book-card-link{ display:contents; color:inherit; }
+:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; } }
+
+/* ==========================================================================
+   TOP UTILITY STRIP
+   ========================================================================== */
+.topbar{
+  background: var(--ink);
+  color: #E9E2CC;
+  font-size: 13px;
+}
+.topbar .container{
+  display:flex; align-items:center; justify-content:space-between;
+  height:38px;
+}
+.topbar-msg{ display:flex; align-items:center; gap:8px; }
+.topbar-msg .dot{ width:5px; height:5px; border-radius:50%; background: var(--gold); display:inline-block; }
+#topbarMsgText{ transition: opacity .25s ease; }
+.topbar-links{ display:flex; gap:22px; }
+.topbar-links a{ opacity:.88; display:flex; align-items:center; gap:6px; }
+.topbar-links a:hover{ opacity:1; color: var(--gold); }
+.topbar-links svg{ width:14px; height:14px; }
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header{
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top:0; z-index: 200;
+}
+.header-row{
+  display:flex; align-items:center; gap:32px;
+  height:82px;
+}
+.brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.brand-mark{
+  width:38px; height:38px; border-radius: 9px;
+  background: linear-gradient(155deg, var(--ink), var(--ink-2));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: var(--shadow-card);
+}
+.brand-mark svg{ width:20px; height:20px; }
+.brand-name{ font-family: var(--font-display); font-size:22px; font-weight:700; color: var(--ink); line-height:1; }
+.brand-tag{ font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color: var(--gold-dark); display:block; margin-top:2px; }
+
+.search-form{
+  flex:1; max-width:560px;
+  display:flex; align-items:center;
+  background: var(--card);
+  border:1.5px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 4px 4px 4px 16px;
+  transition: border-color .15s;
+}
+.search-form:focus-within{ border-color: var(--gold); }
+.search-form input{
+  flex:1; border:0; outline:0; background:transparent;
+  font-family: var(--font-body); font-size:14.5px; padding:9px 0; color:var(--charcoal);
+}
+.search-form input::placeholder{ color:#8B8271; }
+.search-form button{
+  background: var(--ink); color:#fff; border:0;
+  width:38px; height:38px; border-radius: 8px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.search-form button svg{ width:17px; height:17px; }
+
+.header-actions{ display:flex; align-items:center; gap:6px; margin-left:auto; }
+#headerAuthSlot{ display:flex; align-items:center; gap:2px; }
+.icon-btn{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:none; border:0; padding:8px 12px; border-radius: var(--radius-s);
+  font-size:11.5px; color: var(--ink); position:relative;
+}
+.icon-btn:hover{ background: var(--paper-2); }
+.icon-btn svg{ width:22px; height:22px; }
+.icon-btn .count{
+  position:absolute; top:2px; right:6px;
+  background: var(--brick); color:#fff; font-size:10px; font-weight:700;
+  width:16px; height:16px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.main-nav{ border-top:1px solid var(--line); }
+.main-nav .container{ display:flex; align-items:center; gap:2px; height:48px; }
+.main-nav a{
+  font-size:14px; font-weight:500; color: var(--charcoal);
+  padding: 8px 14px; border-radius: var(--radius-s);
+  display:flex; align-items:center; gap:6px;
+}
+.main-nav a:hover, .main-nav a.active{ color: var(--ink); background: var(--paper-2); }
+.main-nav a.active{ font-weight:700; }
+.main-nav .nav-sale{ color: var(--brick); font-weight:700; }
+
+.nav-dropdown{ position:relative; }
+.nav-dropdown-toggle{
+  font: inherit; font-size:14px; font-weight:500; color: var(--charcoal);
+  padding: 8px 14px; border-radius: var(--radius-s); border:0; background:none;
+  display:flex; align-items:center; gap:6px; cursor:pointer;
+}
+.nav-dropdown-toggle:hover{ color: var(--ink); background: var(--paper-2); }
+.nav-caret{ width:13px; height:13px; transition: transform .15s; }
+.nav-dropdown.is-open .nav-dropdown-toggle{ color: var(--ink); background: var(--paper-2); }
+.nav-dropdown.is-open .nav-caret{ transform: rotate(180deg); }
+.nav-dropdown-menu{
+  position:absolute; top:calc(100% + 6px); left:0; min-width:170px;
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  box-shadow: var(--shadow-card); padding:6px; display:flex; flex-direction:column; gap:2px;
+  opacity:0; visibility:hidden; transform: translateY(-4px); transition: all .15s; z-index:20;
+}
+.nav-dropdown.is-open .nav-dropdown-menu{ opacity:1; visibility:visible; transform: translateY(0); }
+.nav-dropdown-menu a{
+  font-size:13.5px; font-weight:500; color: var(--charcoal); padding:8px 10px;
+  border-radius: var(--radius-s); display:block;
+}
+.nav-dropdown-menu a:hover{ color: var(--ink); background: var(--paper-2); }
+
+.account-dropdown .nav-dropdown-menu{ left:auto; right:0; min-width:200px; }
+.account-menu-hello{
+  font-size:13px; font-weight:700; color: var(--ink); padding:8px 10px 6px;
+}
+.account-menu-btn{
+  font: inherit; font-size:13.5px; font-weight:600; text-align:left; width:100%;
+  padding:8px 10px; border-radius: var(--radius-s); border:0; background:none; cursor:pointer; color: var(--ink);
+}
+.account-menu-login{ color: var(--gold-dark); }
+.account-menu-btn:hover, .account-menu-login:hover, .account-menu-register:hover{ background: var(--paper-2); }
+.account-menu-divider{ height:1px; background: var(--line); margin:6px 2px; }
+.account-menu-logout{ color: var(--brick); }
+
+/* ==========================================================================
+   AUTH MODAL (register/login)
+   ========================================================================== */
+.modal-overlay{
+  position:fixed; inset:0; background: rgba(22,48,42,0.55);
+  display:none; align-items:center; justify-content:center;
+  z-index: 500; padding:20px; backdrop-filter: blur(2px);
+}
+.modal-overlay.is-open{ display:flex; }
+.auth-modal{
+  background: var(--card); border-radius: var(--radius-l);
+  width:100%; max-width:900px; max-height:92vh; overflow:hidden;
+  display:grid; grid-template-columns: 1fr 1fr;
+  box-shadow: var(--shadow-pop); position:relative;
+}
+.auth-modal-close{
+  position:absolute; top:16px; right:16px; z-index:5;
+  background: rgba(255,255,255,0.85); border:0; width:34px; height:34px;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+}
+.auth-modal-visual{
+  background: linear-gradient(165deg, var(--ink), #0F2019);
+  color:#fff; padding:44px 36px; display:flex; flex-direction:column; justify-content:space-between;
+}
+.auth-modal-visual h3{ color:#fff; font-size:26px; line-height:1.3; }
+.auth-modal-visual p{ color:#C9D6CC; font-size:13.5px; margin-top:10px; }
+.auth-perks{ display:flex; flex-direction:column; gap:14px; margin-top:28px; }
+.auth-perks li{ display:flex; gap:10px; align-items:flex-start; font-size:13px; color:#DCE6DD; }
+.auth-perks svg{ width:16px; height:16px; flex-shrink:0; margin-top:2px; color: var(--gold); }
+.auth-modal-form{ padding:40px 36px; overflow-y:auto; }
+.auth-tabs{ display:flex; gap:6px; background: var(--paper-2); padding:4px; border-radius: var(--radius-m); margin-bottom:26px; }
+.auth-tab{ flex:1; text-align:center; padding:9px; border-radius:8px; font-size:13.5px; font-weight:600; background:none; border:0; color:var(--charcoal-60); }
+.auth-tab.active{ background: var(--card); color: var(--ink); box-shadow: var(--shadow-card); }
+.field{ margin-bottom:16px; }
+.field label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:6px; color:var(--ink); }
+.field input, .field select{
+  width:100%; padding:11px 13px; border:1.5px solid var(--line); border-radius: var(--radius-s);
+  font-size:14px; font-family: var(--font-body); background:#fff;
+}
+.field input:focus, .field select:focus{ border-color: var(--gold); outline:0; }
+.password-field .password-input-wrap{ position:relative; }
+.password-field .password-input-wrap input{ padding-right:42px; }
+.password-toggle{
+  position:absolute; top:0; right:0; height:100%; width:40px;
+  display:flex; align-items:center; justify-content:center;
+  background:none; border:0; padding:0; cursor:pointer; color:var(--charcoal-60);
+}
+.password-toggle:hover{ color:var(--ink); }
+.password-toggle svg{ width:18px; height:18px; }
+.btn-primary{
+  width:100%; background: var(--ink); color:#fff; border:0; padding:13px;
+  border-radius: var(--radius-s); font-size:14.5px; font-weight:700; margin-top:6px;
+  transition: background .15s;
+}
+.btn-primary:hover{ background: var(--ink-2); }
+.form-hint{ font-size:12.5px; color: var(--charcoal-60); text-align:center; margin-top:16px; }
+.form-error{ font-size:12.5px; color: var(--brick); margin-top:-6px; margin-bottom:10px; min-height:16px; }
+
+/* ============ USER MENU (logged-in header state) ============ */
+.user-menu{ position:relative; }
+.user-menu-dropdown{
+  display:none; position:absolute; top:calc(100% + 8px); right:0; min-width:180px;
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  box-shadow: var(--shadow-pop); padding:6px; z-index:300; flex-direction:column;
+}
+.user-menu-dropdown.is-open{ display:flex; }
+.user-menu-dropdown a, .user-menu-dropdown button{
+  padding:9px 12px; border-radius: var(--radius-s); font-size:13px; text-align:left;
+  color: var(--charcoal); background:none; border:0; width:100%; font-family: var(--font-body);
+}
+.user-menu-dropdown a:hover, .user-menu-dropdown button:hover{ background: var(--paper-2); }
+.user-menu-dropdown #logoutBtn{ color: var(--brick); font-weight:600; }
+.form-hint a{ color: var(--gold-dark); font-weight:600; }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.newsletter-band{
+  background: var(--ink);
+  color:#fff;
+}
+.newsletter-band .container{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding: 40px 24px;
+}
+.newsletter-band h3{ color:#fff; font-size:22px; }
+.newsletter-band p{ color:#B9C7BC; font-size:13.5px; margin-top:6px; }
+.newsletter-form{ display:flex; gap:10px; flex-shrink:0; }
+.newsletter-form input{
+  width:280px; padding:12px 16px; border-radius: var(--radius-s); border:0;
+  font-size:13.5px; font-family: var(--font-body);
+}
+.newsletter-form button{
+  background: var(--gold); color: var(--ink); border:0; font-weight:700;
+  padding:12px 22px; border-radius: var(--radius-s); font-size:13.5px; white-space:nowrap;
+}
+.newsletter-form button:hover{ background:#D8AC50; }
+
+.site-footer{ background:#102420; color:#B9C7BC; padding:56px 0 0; font-size:13.5px;}
+.footer-grid{ display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; gap:32px; padding-bottom:40px; border-bottom:1px solid #24443B; }
+.footer-brand p{ margin-top:12px; line-height:1.7; color:#93A297; }
+.footer-col h4{ color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:16px; }
+.footer-col ul{ display:flex; flex-direction:column; gap:10px; }
+.footer-col a:hover{ color: var(--gold); }
+.footer-social{ display:flex; gap:10px; margin-top:16px; }
+.footer-social a{ width:34px; height:34px; border-radius:50%; background:#1B3830; display:flex; align-items:center; justify-content:center; }
+.footer-social svg{ width:16px; height:16px; }
+.footer-bottom{ display:flex; justify-content:center; align-items:center; padding:20px 0; color:#7C8C81; font-size:12.5px; }
+
+/* responsive */
+@media (max-width: 980px){
+  .footer-grid{ grid-template-columns: repeat(2,1fr); }
+  .auth-modal{ grid-template-columns:1fr; }
+  .auth-modal-visual{ display:none; }
+}
+@media (max-width: 760px){
+  .search-form{ display:none; }
+  .header-row{ height:64px; }
+  .main-nav .container{ overflow-x:auto; }
+  .newsletter-band .container{ flex-direction:column; align-items:flex-start; }
+  .newsletter-form{ width:100%; }
+  .newsletter-form input{ width:100%; flex:1; }
+  .footer-grid{ grid-template-columns:1fr; }
+}
+
+/* ==========================================================================
+   LOGIN/REGISTER TOAST MESSAGES + header user state
+   ========================================================================== */
+.site-toast-wrap{
+  position: fixed; top: 84px; right: 20px; z-index: 900;
+  display:flex; flex-direction:column; gap:8px;
+}
+.site-toast{
+  background: var(--ink); color:#fff; padding:12px 18px; border-radius: var(--radius-s);
+  font-size:13.5px; box-shadow: var(--shadow-pop); animation: toastIn .2s ease;
+}
+.site-toast-error{ background: var(--brick); }
+.site-toast-success{ background: var(--success); }
+@keyframes toastIn{ from{ opacity:0; transform: translateY(-8px); } to{ opacity:1; transform: translateY(0); } }
+.site-toast-hide{ animation: toastOut .3s ease forwards; }
+@keyframes toastOut{ from{ opacity:1; transform: translateY(0); } to{ opacity:0; transform: translateY(-8px); } }
+.header-user-btn{ font-weight:700; }
+.header-logout-btn{ color: var(--charcoal-60); }
+
+.header-avatar{
+  width:30px; height:30px; border-radius:50%; background: var(--gold); color: var(--ink);
+  display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+  font-family: var(--font-display); flex-shrink:0; overflow:hidden;
+}
+.header-avatar img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+/* ==========================================================================
+   TRUST STRIP — shared dark ink accent band (same visual language as the
+   About page's stats strip / Home's dark sections). Used on secondary
+   pages (cart, wishlist, checkout, orders, careers, etc.) so they carry
+   the same bold color moments as Home / About / Contact instead of
+   staying all-pale-card the whole way down.
+   ========================================================================== */
+.trust-strip{ background: var(--ink); }
+.trust-strip-row{
+  display:grid; grid-template-columns: repeat(4,1fr);
+  padding: 32px 0;
+}
+.trust-item{
+  display:flex; align-items:center; gap:16px;
+  text-align:left; border-left:1px solid rgba(255,255,255,0.12);
+  padding: 0 24px;
+}
+.trust-item:first-child{ border-left:0; padding-left:0; }
+.trust-item-icon{
+  width:42px; height:42px; border-radius:50%; background: rgba(255,255,255,0.08);
+  color: var(--gold); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.trust-item-icon svg{ width:20px; height:20px; }
+.trust-item strong{ display:block; color:#fff; font-size:13.5px; font-weight:700; margin-bottom:2px; letter-spacing:.01em; }
+.trust-item span{ color:#B9C7BC; font-size:12px; line-height:1.4; }
+
+/* Single-color gold top accent — a restrained line used on big pale
+   content cards (checkout, dashboard, order tracking, privacy policy,
+   feature cards...) so they don't read as a single flat white/cream
+   block. Kept to one flat color and one consistent thickness everywhere
+   rather than a multi-color gradient. */
+.accent-card-top{ position:relative; overflow:hidden; }
+.accent-card-top::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold);
+}
+
+@media (max-width: 900px){
+  .trust-strip-row{ grid-template-columns: repeat(2,1fr); row-gap:24px; }
+  .trust-item:nth-child(3){ border-left:0; padding-left:0; }
+}
+@media (max-width: 560px){
+  .trust-strip-row{ grid-template-columns: 1fr; }
+  .trust-item{ border-left:0; border-top:1px solid rgba(255,255,255,0.12); padding:16px 0 0; }
+  .trust-item:first-child{ border-top:0; padding-top:0; }
+}

@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Careers — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/careers.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="cr-hero">
+  <div class="container">
+    <span class="eyebrow">Join The Team</span>
+    <h1>Help us build the bookstore we always wanted.</h1>
+    <p>We're a small, remote-friendly team based in Kolkata, hiring people who care about books, good software, and honest customer service.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Why Inkwell</span>
+      <h2>What it's like working here</h2>
+    </div>
+    <div class="cr-values-grid">
+      <div class="cr-value-card">
+        <div class="cr-value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>Flexible hours</h4>
+        <p>Work when you're most productive — we care about output, not hours logged.</p>
+      </div>
+      <div class="cr-value-card">
+        <div class="cr-value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z"/></svg></div>
+        <h4>Book allowance</h4>
+        <p>A monthly credit to buy anything from our own catalog, on us.</p>
+      </div>
+      <div class="cr-value-card">
+        <div class="cr-value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.4-9.5 9-9.5 9z"/></svg></div>
+        <h4>Small team, real impact</h4>
+        <p>No layers of approval — what you ship this week, readers see this week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section cr-openings-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Open Roles</span>
+      <h2>Current openings</h2>
+    </div>
+    <div class="cr-jobs-list">
+      <div class="cr-job-card">
+        <div>
+          <h4>Frontend Engineer</h4>
+          <span class="cr-job-meta">Engineering · Remote (India) · Full-time</span>
+        </div>
+        <a href="mailto:careers@inkwellbooks.in?subject=Application: Frontend Engineer" class="btn-hero-ghost">Apply →</a>
+      </div>
+      <div class="cr-job-card">
+        <div>
+          <h4>Catalog &amp; Curation Associate</h4>
+          <span class="cr-job-meta">Operations · Kolkata (Hybrid) · Full-time</span>
+        </div>
+        <a href="mailto:careers@inkwellbooks.in?subject=Application: Catalog Associate" class="btn-hero-ghost">Apply →</a>
+      </div>
+      <div class="cr-job-card">
+        <div>
+          <h4>Customer Support Specialist</h4>
+          <span class="cr-job-meta">Support · Remote (India) · Full-time</span>
+        </div>
+        <a href="mailto:careers@inkwellbooks.in?subject=Application: Customer Support" class="btn-hero-ghost">Apply →</a>
+      </div>
+      <div class="cr-job-card">
+        <div>
+          <h4>Warehouse &amp; Fulfilment Associate</h4>
+          <span class="cr-job-meta">Logistics · Kolkata (On-site) · Full-time</span>
+        </div>
+        <a href="mailto:careers@inkwellbooks.in?subject=Application: Warehouse Associate" class="btn-hero-ghost">Apply →</a>
+      </div>
+    </div>
+    <p class="cr-no-fit">Don't see a fit? Write to us anyway at <a href="mailto:careers@inkwellbooks.in">careers@inkwellbooks.in</a>.</p>
+  </div>
+</section>
+
+{% endblock %}

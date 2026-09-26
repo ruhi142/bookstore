@@ -1,0 +1,135 @@
+/* ==========================================================================
+   INKWELL BOOKS — chatbot.css
+   Floating widget: shows ONLY the round icon by default (bottom-right).
+   Clicking it opens the chat panel; clicking again (or the close icon) hides it.
+   ========================================================================== */
+
+.chat-widget{
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 800;
+  font-family: var(--font-body);
+}
+
+/* --- the floating icon button (always visible) --- */
+.chat-fab{
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(155deg, var(--gold), var(--gold-dark));
+  border: 0;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 1px 8px rgba(168,127,44,0.45);
+  position: relative;
+  transition: transform .18s ease;
+}
+.chat-fab:hover{ transform: translateY(-3px) scale(1.03); }
+.chat-fab svg{ width:26px; height:26px; color: var(--ink); }
+.chat-fab .fab-close-icon{ display:none; }
+.chat-widget.is-open .chat-fab .fab-chat-icon{ display:none; }
+.chat-widget.is-open .chat-fab .fab-close-icon{ display:block; }
+
+.chat-fab-ping{
+  position:absolute; top:-4px; right:-4px;
+  width:16px; height:16px; border-radius:50%;
+  background: var(--brick); border:2px solid var(--paper);
+}
+.chat-widget.is-open .chat-fab-ping{ display:none; }
+
+/* --- the chat panel: hidden until .is-open is added to .chat-widget --- */
+.chat-panel{
+  position:absolute;
+  bottom: 76px; right: 0;
+  width: 360px; max-width: calc(100vw - 32px);
+  height: 480px; max-height: 70vh;
+  background: var(--card);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-pop);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  opacity:0; transform: translateY(14px) scale(0.97);
+  pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.chat-widget.is-open .chat-panel{
+  opacity:1; transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.chat-panel-head{
+  background: linear-gradient(155deg, var(--ink), var(--ink-2));
+  color:#fff; padding:16px 18px;
+  display:flex; align-items:center; gap:10px;
+}
+.chat-avatar{
+  width:34px; height:34px; border-radius:50%;
+  background: var(--gold); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.chat-avatar svg{ width:18px; height:18px; color: var(--ink); }
+.chat-panel-head-text{ line-height:1.25; }
+.chat-panel-head-text strong{ font-size:14px; display:block; }
+.chat-panel-head-text span{ font-size:11.5px; color:#B9C7BC; display:flex; align-items:center; gap:5px; }
+.chat-panel-head-text .status-dot{ width:6px; height:6px; border-radius:50%; background:#5FCB86; display:inline-block; }
+
+.chat-panel-body{
+  flex:1; overflow-y:auto; padding:16px;
+  display:flex; flex-direction:column; gap:12px;
+  background: var(--paper);
+}
+.chat-msg{ max-width:82%; font-size:13.5px; line-height:1.5; padding:10px 13px; border-radius: 14px; }
+.chat-msg.bot{ background:#fff; border:1px solid var(--line); border-bottom-left-radius:4px; align-self:flex-start; color: var(--charcoal); }
+.chat-msg.user{ background: var(--ink); color:#fff; border-bottom-right-radius:4px; align-self:flex-end; }
+.chat-msg.bot a{ color: var(--gold-dark); font-weight:600; text-decoration: underline; }
+
+/* Book suggestions rendered inside a bot bubble */
+.chat-books-intro{ margin-bottom:8px; }
+.chat-books{ display:flex; flex-direction:column; gap:6px; }
+.chat-book{
+  display:flex; flex-direction:column; gap:1px;
+  padding:8px 10px; border-radius:10px;
+  background: var(--paper); border:1px solid var(--line);
+  text-decoration:none !important; transition: border-color .15s ease;
+}
+.chat-book:hover{ border-color: var(--gold); }
+.chat-book-title{ font-weight:700; font-size:13px; color: var(--ink); }
+.chat-book-meta{ font-size:11.5px; color:#7A8B7E; font-weight:500; }
+
+/* Typing indicator bubble */
+.chat-msg.is-typing{ padding:12px 14px; }
+.chat-typing{ display:inline-flex; gap:4px; align-items:center; }
+.chat-typing span{
+  width:6px; height:6px; border-radius:50%; background: var(--ink);
+  opacity:.35; animation: chatTypingBlink 1s infinite ease-in-out;
+}
+.chat-typing span:nth-child(2){ animation-delay:.15s; }
+.chat-typing span:nth-child(3){ animation-delay:.3s; }
+@keyframes chatTypingBlink{
+  0%, 80%, 100%{ opacity:.25; transform: translateY(0); }
+  40%{ opacity:.8; transform: translateY(-2px); }
+}
+
+.chat-suggest{ display:flex; flex-wrap:wrap; gap:8px; }
+.chat-suggest button{
+  background:#fff; border:1px solid var(--line); color: var(--ink);
+  font-size:12px; padding:7px 12px; border-radius:20px; font-weight:600;
+}
+.chat-suggest button:hover{ border-color: var(--gold); color: var(--gold-dark); }
+
+.chat-panel-input{
+  display:flex; gap:8px; padding:12px; border-top:1px solid var(--line); background: var(--card);
+}
+.chat-panel-input input{
+  flex:1; border:1.5px solid var(--line); border-radius: 20px; padding:10px 15px;
+  font-size:13.5px; font-family: var(--font-body); outline:0;
+}
+.chat-panel-input input:focus{ border-color: var(--gold); }
+.chat-panel-input button{
+  width:38px; height:38px; border-radius:50%; background: var(--ink); border:0;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.chat-panel-input button svg{ width:16px; height:16px; color:#fff; }
+
+@media (max-width: 480px){
+  .chat-widget{ right:16px; bottom:16px; }
+  .chat-panel{ width: calc(100vw - 32px); right: -8px; }
+}

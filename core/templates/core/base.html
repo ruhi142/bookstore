@@ -1,0 +1,439 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Inkwell Books — Buy Books Online in India{% endblock %}</title>
+<meta name="description" content="{% block meta_description %}Inkwell Books — new & pre-loved books across every genre, best prices, pan-India delivery.{% endblock %}">
+<link rel="icon" href="{% static 'core/img/favicon.png' %}">
+<link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'core/css/chatbot.css' %}">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ============ TOP UTILITY STRIP ============ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-msg"><span class="dot"></span> <span id="topbarMsgText">Free delivery on orders above ₹499</span></div>
+    <div class="topbar-links">
+      <a href="tel:+911234567890">Helpline no. :
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.3z"/></svg>
+        +91 12345 67890
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="container header-row">
+    <a href="{% url 'core:home' %}" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z" fill="#C89B3C"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z" fill="#F6F1E4"/></svg>
+      </span>
+      <span>
+        <span class="brand-name">Inkwell</span>
+        <span class="brand-tag">Books &amp; Stories</span>
+      </span>
+    </a>
+
+    <form class="search-form" role="search" action="{% url 'catalog:search' %}" method="get">
+      <input type="text" name="q" placeholder="Search by title, author or ISBN…">
+      <button type="submit" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </form>
+
+    <div class="header-actions">
+      <div class="nav-dropdown account-dropdown" id="accountDropdown">
+        <button type="button" class="icon-btn account-dropdown-toggle" id="accountDropdownToggle">
+          {% if user.is_authenticated %}
+            <span class="header-avatar">
+              {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name|default:user.username }}">
+              {% else %}
+                <span>{% if user.first_name %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% else %}{{ user.username|slice:":2"|upper }}{% endif %}</span>
+              {% endif %}
+            </span>
+          {% else %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+            Account
+          {% endif %}
+        </button>
+        <div class="nav-dropdown-menu account-dropdown-menu" id="accountDropdownMenu">
+          {% if user.is_authenticated %}
+          <div class="account-menu-hello">Hi, {{ user.first_name|default:user.username }}</div>
+          {% else %}
+          <button type="button" class="account-menu-btn account-menu-login" id="accountMenuLogin">Log In</button>
+          <button type="button" class="account-menu-btn account-menu-register" id="accountMenuRegister">New to Inkwell? Register</button>
+          <div class="account-menu-divider"></div>
+          {% endif %}
+          <a href="{% url 'accounts:dashboard' %}">My Dashboard</a>
+          <a href="{% url 'orders:my_orders' %}">My Orders</a>
+          <a href="{% url 'orders:track_order' %}">Track Order</a>
+          <a href="{% url 'cart:view_cart' %}">My Cart</a>
+          <a href="{% url 'core:wishlist' %}">My Wishlist</a>
+          {% if user.is_authenticated %}
+          <div class="account-menu-divider"></div>
+          <a href="{% url 'accounts:logout' %}" class="account-menu-logout">Logout</a>
+          {% endif %}
+        </div>
+      </div>
+      <a href="{% url 'core:wishlist' %}" class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        Wishlist
+        <span class="count" id="wishlistCount" style="display:none;">0</span>
+      </a>
+      <a href="{% url 'cart:view_cart' %}" class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+        Cart
+        <span class="count" id="cartCount" style="display:none;">0</span>
+      </a>
+    </div>
+  </div>
+
+  <nav class="main-nav">
+    <div class="container">
+      <a href="{% url 'core:home' %}">Home</a>
+      <div class="nav-dropdown" id="navCategoriesDropdown">
+        <button type="button" class="nav-dropdown-toggle" id="navCategoriesToggle">
+          Categories
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-caret"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="navCategoriesMenu">
+          <a href="{% url 'catalog:category_listing' 'fiction' %}">Fiction</a>
+          <a href="{% url 'catalog:category_listing' 'non-fiction' %}">Non-Fiction</a>
+          <a href="{% url 'catalog:category_listing' 'academic' %}">Academic</a>
+          <a href="{% url 'catalog:category_listing' 'children' %}">Children</a>
+        </div>
+      </div>
+      <a href="{% url 'catalog:category_listing' 'sale' %}" class="nav-sale">🔥 Sale up to 70%</a>
+      <a href="{% url 'core:about' %}">About</a>
+      <a href="{% url 'core:contact' %}">Contact</a>
+    </div>
+  </nav>
+</header>
+
+{% block content %}{% endblock %}
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="newsletter-band">
+  <div class="container">
+    <div>
+      <h3>Get ₹100 off your first order</h3>
+      <p>Subscribe for early access to sales, new arrivals and reading picks — no spam, unsubscribe anytime.</p>
+    </div>
+    <form class="newsletter-form" method="post" action="{% url 'core:subscribe' %}">
+      {% csrf_token %}
+      <input type="email" name="email" placeholder="you@email.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="brand" style="color:#fff;">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z" fill="#C89B3C"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z" fill="#F6F1E4"/></svg></span>
+        <span class="brand-name" style="color:#fff;">Inkwell</span>
+      </div>
+      <p>An online bookstore built to make discovering, buying and tracking books simple — with an AI assistant to help you pick your next read.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.1.9 5.4 5.4 0 0 0 2.4-3 10.8 10.8 0 0 1-3.4 1.3 5.4 5.4 0 0 0-9.2 4.9A15.3 15.3 0 0 1 1.6 2.2a5.4 5.4 0 0 0 1.7 7.2A5.3 5.3 0 0 1 .9 8.7v.1a5.4 5.4 0 0 0 4.3 5.3 5.4 5.4 0 0 1-2.4.1 5.4 5.4 0 0 0 5 3.8A10.9 10.9 0 0 1 0 20.4a15.3 15.3 0 0 0 8.3 2.4c9.9 0 15.3-8.2 15.3-15.3v-.7A11 11 0 0 0 23 3z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="{% url 'catalog:category_listing' 'fiction' %}">Fiction</a></li>
+        <li><a href="{% url 'catalog:category_listing' 'non-fiction' %}">Non-Fiction</a></li>
+        <li><a href="{% url 'catalog:category_listing' 'academic' %}">Academic &amp; Textbooks</a></li>
+        <li><a href="{% url 'catalog:category_listing' 'sale' %}">Deals &amp; Offers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Account</h4>
+      <ul>
+        <li><a href="{% url 'accounts:dashboard' %}">My Dashboard</a></li>
+        <li><a href="{% url 'orders:my_orders' %}">My Orders</a></li>
+        <li><a href="{% url 'orders:track_order' %}">Track Order</a></li>
+        <li><a href="{% url 'cart:view_cart' %}">My Cart</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="{% url 'core:about' %}">About Us</a></li>
+        <li><a href="{% url 'core:contact' %}">Contact Us</a></li>
+        <li><a href="{% url 'core:careers' %}">Careers</a></li>
+        <li><a href="{% url 'core:privacy_policy' %}">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reach Us</h4>
+      <ul>
+        <li>Salt Lake, Kolkata, WB</li>
+        <li>+91 12345 67890</li>
+        <li>support@inkwellbooks.in</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Inkwell Books. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ AUTH MODAL (Register / Login) ============ -->
+<div class="modal-overlay" id="authModalOverlay">
+  <div class="auth-modal">
+    <button class="auth-modal-close" id="authModalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#16302A" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="auth-modal-visual">
+      <div>
+        <h3>Your next favourite<br>book is one click away.</h3>
+        <p>Join Inkwell for OTP-secured checkout, saved addresses and order tracking.</p>
+      </div>
+      <ul class="auth-perks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> OTP-verified secure checkout</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Track every order in real time</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> AI assistant picks books for you</li>
+      </ul>
+    </div>
+    <div class="auth-modal-form">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login" type="button">Log In</button>
+        <button class="auth-tab" data-tab="register" type="button">Register</button>
+      </div>
+
+      <form id="loginForm" class="auth-form" method="post" action="{% url 'accounts:login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@email.com"></div>
+        <div class="field password-field">
+          <label>Password</label>
+          <div class="password-input-wrap">
+            <input type="password" name="password" required placeholder="••••••••">
+            <button type="button" class="password-toggle" aria-label="Show password">
+              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </div>
+        <p class="form-hint" style="text-align:right; margin:-8px 0 8px;"><a href="#" data-tab-link="forgot">Forgot password?</a></p>
+        <button class="btn-primary" type="submit">Log In</button>
+        <p class="form-hint">New to Inkwell? <a href="#" data-tab-link="register">Create an account</a></p>
+      </form>
+
+      <form id="registerForm" class="auth-form" method="post" action="{% url 'accounts:register' %}" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <div class="field"><label>Full Name</label><input type="text" name="name" required placeholder="Aisha Roy"></div>
+        <div class="field"><label>Mobile Number</label><input type="tel" name="phone" required placeholder="98765 43210" pattern="[0-9]{10}" title="Enter a 10-digit mobile number"></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@email.com"></div>
+        <div class="field password-field">
+          <label>Password</label>
+          <div class="password-input-wrap">
+            <input type="password" name="password" required placeholder="Create a password">
+            <button type="button" class="password-toggle" aria-label="Show password">
+              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="btn-primary" type="submit">Create Account</button>
+        <p class="form-hint">Already registered? <a href="#" data-tab-link="login">Log in</a></p>
+      </form>
+
+      <form id="forgotForm" class="auth-form" method="post" action="{% url 'accounts:forgot_password' %}" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <p style="font-size:13px; color:var(--charcoal-60); margin:-4px 0 18px;">Enter the email on your account and we'll send you a link to reset your password.</p>
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@email.com"></div>
+        <button class="btn-primary" type="submit">Send Reset Link</button>
+        <p class="form-hint">Remembered it? <a href="#" data-tab-link="login">Back to log in</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLOATING CHATBOT WIDGET (icon only until clicked) ============ -->
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-panel">
+    <div class="chat-panel-head">
+      <span class="chat-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a7 7 0 0 0-7 7v3a2 2 0 0 0 2 2h1v-6a4 4 0 0 1 8 0v6h1a2 2 0 0 0 2-2v-3a7 7 0 0 0-7-7z"/><path d="M8 15v2a4 4 0 0 0 8 0v-2"/></svg>
+      </span>
+      <div class="chat-panel-head-text">
+        <strong>Inkwell Assistant</strong>
+        <span><span class="status-dot"></span> Online — here to help you find a book</span>
+      </div>
+      <button id="chatPanelClose" aria-label="Close chat" style="margin-left:auto;background:none;border:0;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="chat-panel-body" id="chatPanelBody">
+      <div class="chat-msg bot">Hi! I'm the Inkwell reading assistant 👋 Tell me a genre or mood and I'll suggest a few titles.</div>
+      <div class="chat-suggest">
+        <button type="button" data-suggest="Suggest a thriller">Suggest a thriller</button>
+        <button type="button" data-suggest="Best sellers under ₹300">Under ₹300</button>
+        <button type="button" data-suggest="Where's my order?">Where's my order?</button>
+      </div>
+    </div>
+    <form class="chat-panel-input" id="chatPanelForm">
+      <input type="text" id="chatPanelInput" placeholder="Ask about a book, offer or order…" autocomplete="off">
+      <button type="submit" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <button class="chat-fab" id="chatFab" aria-label="Open chat assistant">
+    <span class="fab-chat-icon" style="display:flex;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-1 4 8.5 8.5 0 0 1-7.5 4.5 8.4 8.4 0 0 1-4-1L3 21l2-5.5a8.4 8.4 0 0 1-1-4 8.5 8.5 0 0 1 4.5-7.5 8.4 8.4 0 0 1 4-1h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    </span>
+    <svg class="fab-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <span class="chat-fab-ping"></span>
+  </button>
+</div>
+
+<script>
+  // Which account's cart/wishlist to use. Each logged-in user gets their
+  // own bucket (scoped by user id) so switching accounts on the same
+  // browser doesn't mix up carts. Logged-out visitors share a "guest" bucket.
+  window.INKWELL_USER_ID = {% if user.is_authenticated %}"{{ user.id }}"{% else %}"guest"{% endif %};
+</script>
+<script src="{% static 'core/js/store.js' %}?v=2"></script>
+<script src="{% static 'core/js/chatbot.js' %}"></script>
+<script>
+// Auth modal open/close + tab switching (shared shell logic, lives here since
+// the modal itself is shared markup in base.html)
+(function(){
+  const overlay = document.getElementById('authModalOverlay');
+  const openBtn = document.getElementById('accountMenuLogin');
+  const registerBtn = document.getElementById('accountMenuRegister');
+  const closeBtn = document.getElementById('authModalClose');
+  const tabs = document.querySelectorAll('.auth-tab');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const forgotForm = document.getElementById('forgotForm');
+
+  function showTab(tab){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    loginForm.style.display = tab === 'login' ? 'block' : 'none';
+    registerForm.style.display = tab === 'register' ? 'block' : 'none';
+    forgotForm.style.display = tab === 'forgot' ? 'block' : 'none';
+  }
+  openBtn && openBtn.addEventListener('click', () => { overlay.classList.add('is-open'); showTab('login'); });
+  registerBtn && registerBtn.addEventListener('click', () => { overlay.classList.add('is-open'); showTab('register'); });
+  closeBtn && closeBtn.addEventListener('click', () => overlay.classList.remove('is-open'));
+  overlay && overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('is-open'); });
+  tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+  document.querySelectorAll('[data-tab-link]').forEach(a => {
+    a.addEventListener('click', (e) => { e.preventDefault(); showTab(a.dataset.tabLink); });
+  });
+
+  {% if messages %}
+    {% for message in messages %}
+      {% if 'auth-login' in message.tags %}
+        overlay && overlay.classList.add('is-open');
+        showTab('login');
+      {% elif 'auth-register' in message.tags %}
+        overlay && overlay.classList.add('is-open');
+        showTab('register');
+      {% elif 'auth-forgot' in message.tags %}
+        overlay && overlay.classList.add('is-open');
+        showTab('login');
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+})();
+
+// Password show/hide toggle — works for every ".password-toggle" button on
+// the page (login, register, forgot, and the standalone reset-password page).
+document.querySelectorAll('.password-toggle').forEach((btn) => {
+  const input = btn.parentElement.querySelector('input');
+  const eyeOpen = btn.querySelector('.eye-open');
+  const eyeClosed = btn.querySelector('.eye-closed');
+  btn.addEventListener('click', () => {
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    eyeOpen.style.display = showing ? 'block' : 'none';
+    eyeClosed.style.display = showing ? 'none' : 'block';
+    btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+  });
+});
+
+// Header dropdowns: "Categories" nav menu + "Account" menu.
+// Both use the same .nav-dropdown / .nav-dropdown-menu pattern.
+(function(){
+  const dropdowns = [
+    { wrap: document.getElementById('navCategoriesDropdown'), toggle: document.getElementById('navCategoriesToggle') },
+    { wrap: document.getElementById('accountDropdown'), toggle: document.getElementById('accountDropdownToggle') },
+  ].filter(d => d.wrap && d.toggle);
+
+  dropdowns.forEach(({ wrap, toggle }) => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !wrap.classList.contains('is-open');
+      dropdowns.forEach(d => d.wrap.classList.remove('is-open'));
+      if (willOpen) wrap.classList.add('is-open');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    dropdowns.forEach(({ wrap }) => { if (!wrap.contains(e.target)) wrap.classList.remove('is-open'); });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dropdowns.forEach(({ wrap }) => wrap.classList.remove('is-open'));
+  });
+})();
+
+// Toast notifications (welcome / profile updated / etc.) auto-dismiss after 5s.
+// Runs on DOMContentLoaded since the toast markup itself is further down the
+// page than this script tag, so it doesn't exist yet at this point.
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.site-toast').forEach((toast) => {
+    setTimeout(() => {
+      toast.classList.add('site-toast-hide');
+      setTimeout(() => toast.remove(), 300);
+    }, 5000);
+  });
+});
+
+// Top utility bar: rotating promo messages (bookswagon/crossword-style ticker)
+(function(){
+  const el = document.getElementById('topbarMsgText');
+  if (!el) return;
+  const messages = [
+    'Free delivery on orders above ₹499',
+    'Flat 25% off on Fiction — code READ25',
+    'Extra 10% off on prepaid orders',
+    'Academic books — buy 2 get 1 free',
+  ];
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % messages.length;
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = messages[i];
+      el.style.opacity = '1';
+    }, 250);
+  }, 3200);
+})();
+</script>
+{% if messages %}
+<div class="site-toast-wrap">
+  {% for message in messages %}
+  <div class="site-toast {% if 'error' in message.tags %}site-toast-error{% elif 'success' in message.tags %}site-toast-success{% endif %}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% block extra_js %}{% endblock %}
+</body>
+</html>

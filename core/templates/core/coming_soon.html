@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+{% block title %}{{ page_title|default:"Coming Soon" }} — Inkwell Books{% endblock %}
+{% block content %}
+<section class="section" style="text-align:center; padding:120px 24px;">
+  <h1 style="font-size:34px; margin-bottom:12px;">{{ page_title|default:"This page is being built" }}</h1>
+  <p style="color:var(--charcoal-60); max-width:480px; margin:0 auto;">
+    This part of Inkwell Books hasn't been designed yet in our build order.
+    Come back once it's ready — for now, head back to the homepage.
+  </p>
+  <a href="{% url 'core:home' %}" class="btn-hero-primary" style="display:inline-block; margin-top:24px;">Back to Home</a>
+</section>
+{% endblock %}

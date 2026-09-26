@@ -1,0 +1,219 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Contact Us — Inkwell Books{% endblock %}
+{% block meta_description %}Get in touch with Inkwell Books — order support, bulk & institutional orders, store address, business hours and FAQs.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ============ CONTACT HERO ============ -->
+<section class="contact-hero">
+  <div class="container">
+    <span class="eyebrow">Get In Touch</span>
+    <h1>We're here to help,<br>however you'd like to reach us.</h1>
+    <p>Order questions, bulk purchases, partnerships, or just book recommendations — pick whatever's easiest for you below.</p>
+  </div>
+</section>
+
+<!-- ============ QUICK CONTACT CARDS ============ -->
+<section class="section quick-contact-section">
+  <div class="container quick-contact-grid">
+    <article class="quick-card">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.3z"/></svg>
+      </div>
+      <h4>Call Us</h4>
+      <p>Mon–Sat, 10am–7pm IST</p>
+      <a href="tel:+911234567890">+91 12345 67890</a>
+    </article>
+    <article class="quick-card">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="m4 5 8 7 8-7"/></svg>
+      </div>
+      <h4>Email Us</h4>
+      <p>We reply within 24 hours</p>
+      <a href="mailto:support@inkwellbooks.in">support@inkwellbooks.in</a>
+    </article>
+    <article class="quick-card">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h4>Visit Us</h4>
+      <p>Our fulfilment &amp; office address</p>
+      <span>Salt Lake, Kolkata, WB 700091</span>
+    </article>
+    <article class="quick-card">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-1 4 8.5 8.5 0 0 1-7.5 4.5 8.4 8.4 0 0 1-4-1L3 21l2-5.5a8.4 8.4 0 0 1-1-4 8.5 8.5 0 0 1 4.5-7.5 8.4 8.4 0 0 1 4-1h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <h4>Live Chat</h4>
+      <p>Fastest for order tracking</p>
+      <a href="#" id="openChatFromContact">Chat with Inkwell Assistant</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FORM + INFO PANEL ============ -->
+<section class="section contact-main-section">
+  <div class="container contact-main-grid">
+
+    <!-- Contact Form -->
+    <div class="contact-form-card">
+      <h2>Send us a message</h2>
+      <p class="form-sub">Fill this in and our support team will get back to you by email.</p>
+      <form class="contact-form" method="post" action="{% url 'core:contact' %}">
+        {% csrf_token %}
+        <div class="field-row">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Phone Number <span class="optional">(optional)</span></label>
+            <input type="tel" name="phone" placeholder="98765 43210">
+          </div>
+          <div class="field">
+            <label>What's this about?</label>
+            <select name="topic">
+              <option>Order Status / Tracking</option>
+              <option>Returns &amp; Refunds</option>
+              <option>Bulk / Institutional Orders</option>
+              <option>Sell Your Pre-loved Books</option>
+              <option>Partnerships &amp; Careers</option>
+              <option>Something Else</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Order ID <span class="optional">(if applicable)</span></label>
+          <input type="text" name="order_id" placeholder="e.g. INK-2026-00458">
+        </div>
+        <div class="field">
+          <label>Message</label>
+          <textarea name="message" rows="5" placeholder="Tell us a bit more…" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-submit">Send Message</button>
+        <p class="form-note">By submitting, you agree to be contacted about your query. We don't share your details with anyone else.</p>
+      </form>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="contact-info-panel">
+      <div class="info-map">
+        <iframe 
+          src="https://maps.google.com/maps?q=Techno%20Complex%2C%20Sector%20V%2C%20Salt%20Lake%2C%20Kolkata%2C%20West%20Bengal%20700091&t=&z=16&ie=UTF8&iwloc=B&output=embed" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div class="info-block">
+        <h4>Registered Office</h4>
+        <p>Inkwell Books Pvt. Ltd.<br>4th Floor, Techno Complex,<br>Salt Lake Sector V, Kolkata,<br>West Bengal 700091, India</p>
+      </div>
+      <div class="info-block">
+        <h4>Business Hours</h4>
+        <ul class="hours-list">
+          <li><span>Monday – Saturday</span><span>10:00 AM – 7:00 PM</span></li>
+          <li><span>Sunday</span><span>11:00 AM – 4:00 PM</span></li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Follow Along</h4>
+        <div class="info-social">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.1.9 5.4 5.4 0 0 0 2.4-3 10.8 10.8 0 0 1-3.4 1.3 5.4 5.4 0 0 0-9.2 4.9A15.3 15.3 0 0 1 1.6 2.2a5.4 5.4 0 0 0 1.7 7.2A5.3 5.3 0 0 1 .9 8.7v.1a5.4 5.4 0 0 0 4.3 5.3 5.4 5.4 0 0 1-2.4.1 5.4 5.4 0 0 0 5 3.8A10.9 10.9 0 0 1 0 20.4a15.3 15.3 0 0 0 8.3 2.4c9.9 0 15.3-8.2 15.3-15.3v-.7A11 11 0 0 0 23 3z"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Before You Write In</span>
+      <h2 style="font-weight: bold; font-size: 36px;">Quick answers to common questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          <span>How do I track my order?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Go to My Orders → Track Order, or use the "Track Order" link in the top bar of any page. You'll need your Order ID, which is in your confirmation email.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          <span>What's your return policy?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>New books can be returned within 7 days if unopened and in original condition. Pre-loved books are non-returnable unless the listing description was inaccurate — contact us with photos and we'll sort it out.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          <span>Do you deliver across all of India?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — we currently deliver to 600+ pin codes pan-India. Delivery time is typically 3–6 business days depending on your location.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          <span>Can I order in bulk for a school or library?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely — select "Bulk / Institutional Orders" in the form above with your requirement, and our team will follow up with a custom quote.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          <span>Is OTP verification required for every order?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Yes, every checkout — regardless of payment method — is confirmed with an OTP sent to your registered mobile number, to keep your account and payments secure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="contact-cta">
+  <div class="container contact-cta-inner">
+    <div>
+      <h2>Didn't find what you needed?</h2>
+      <p>Our support team typically responds within a few hours on business days.</p>
+    </div>
+    <a href="mailto:support@inkwellbooks.in" class="btn-hero-primary">Email Support</a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/contact.js' %}"></script>
+{% endblock %}

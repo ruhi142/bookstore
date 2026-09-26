@@ -1,0 +1,96 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}My Dashboard — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'orders/css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="dash-hero">
+  <div class="container dash-hero-row">
+    <div class="dash-avatar">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ user.get_full_name|default:user.username }}">
+      {% else %}
+        {% if user.first_name %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% else %}{{ user.username|slice:":2"|upper }}{% endif %}
+      {% endif %}
+    </div>
+    <div>
+      <span class="eyebrow">Welcome back</span>
+      <h1>{{ user.get_full_name|default:user.username }}</h1>
+      <p>{{ user.email }} · Member since {{ user.date_joined|date:"M Y" }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section dash-section">
+  <div class="container dash-layout">
+
+    <nav class="dash-nav">
+      <a href="{% url 'accounts:dashboard' %}" class="is-active">Overview</a>
+      <a href="{% url 'orders:my_orders' %}">My Orders</a>
+      <a href="{% url 'orders:track_order' %}">Track Order</a>
+      <a href="{% url 'core:wishlist' %}">Wishlist</a>
+      <a href="{% url 'accounts:account_settings' %}">Account Settings</a>
+    </nav>
+
+    <div class="dash-main">
+      <div class="dash-stats-grid">
+        <div class="dash-stat-card">
+          <span class="dash-stat-num">{{ orders|length }}</span>
+          <span class="dash-stat-label">Total Orders</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-num" id="dashWishlistCount">0</span>
+          <span class="dash-stat-label">Wishlist Items</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-num">₹{{ total_spent }}</span>
+          <span class="dash-stat-label">Total Spent</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-num">{{ in_transit_count }}</span>
+          <span class="dash-stat-label">Orders In Transit</span>
+        </div>
+      </div>
+
+      <div class="dash-panel">
+        <div class="dash-panel-head">
+          <h3>Recent Orders</h3>
+          <a href="{% url 'orders:my_orders' %}">View all →</a>
+        </div>
+        {% for order in orders|slice:":3" %}
+        <div class="dash-order-row">
+          <span class="dash-order-id">{{ order.order_id }}</span>
+          <span class="dash-order-date">{{ order.placed_at|date:"d M Y" }}</span>
+          <span class="ord-status-badge {% if order.current_status == 'Delivered' %}ord-status-delivered{% else %}ord-status-transit{% endif %}">{{ order.current_status }}</span>
+        </div>
+        {% empty %}
+        <p class="dash-empty-note">No orders yet — your purchases will show up here.</p>
+        {% endfor %}
+      </div>
+
+      <div class="dash-panel">
+        <div class="dash-panel-head">
+          <h3>Account Details</h3>
+        </div>
+        <p class="dash-address">
+          {{ user.get_full_name|default:user.username }}<br>
+          {{ user.email }}<br>
+          {% if user.profile.phone %}+91 {{ user.profile.phone }}{% endif %}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'accounts/js/dashboard.js' %}"></script>
+{% endblock %}

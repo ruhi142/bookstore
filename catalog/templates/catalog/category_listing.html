@@ -1,0 +1,108 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ category.title }} — Inkwell Books{% endblock %}
+{% block meta_description %}Shop {{ category.title }} at Inkwell Books — {{ category.tagline }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'catalog/css/category.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ============ CATEGORY HERO (elegant, neutral — no per-category color banner) ============ -->
+<section class="cat-hero">
+  <div class="container">
+    <div class="cat-breadcrumb">
+      <a href="{% url 'core:home' %}">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>{{ category.title }}</span>
+    </div>
+    <div class="cat-hero-row">
+      <div class="cat-hero-icon">
+        {% if slug == "fiction" %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5A1.5 1.5 0 0 1 4 19.5v-15z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5a1.5 1.5 0 0 0 1.5-1.5v-15z"/></svg>
+        {% elif slug == "non-fiction" %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18M3 12h18"/></svg>
+        {% elif slug == "academic" %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+        {% elif slug == "children" %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.4-9.5 9-9.5 9z"/></svg>
+        {% else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20.6 12 12 3.4 4 4l-.6 8L12 20.6z"/><circle cx="8" cy="8" r="1.4"/></svg>
+        {% endif %}
+      </div>
+      <div>
+        <span class="cat-count-badge">{{ category.count }} titles</span>
+        <h1>{{ category.title }}</h1>
+        <p>{{ category.tagline }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SORT / FILTER BAR ============ -->
+<section class="cat-toolbar">
+  <div class="container cat-toolbar-row">
+    <div class="cat-filter-chips" id="catChips">
+      <button class="cat-chip is-active" type="button" data-filter="all">All</button>
+      <button class="cat-chip" type="button" data-filter="new">New</button>
+      <button class="cat-chip" type="button" data-filter="pre-loved">Pre-loved</button>
+      <button class="cat-chip" type="button" data-filter="under-300">Under ₹300</button>
+      <button class="cat-chip" type="button" data-filter="under-500">Under ₹500</button>
+      <button class="cat-chip" type="button" data-filter="under-1000">Under ₹1000</button>
+    </div>
+    <div class="cat-sort">
+      <label for="catSort">Sort by</label>
+      <select id="catSort">
+        <option value="popular">Popularity</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="discount">Biggest Discount</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOK GRID ============ -->
+<section class="section cat-grid-section">
+  <div class="container">
+    <p class="cat-empty-msg" id="catEmptyMsg" style="display:none;">No titles match this filter right now.</p>
+    <div class="cat-book-grid" id="catBookGrid">
+      {% for book in category.books %}
+      <article class="book-card"
+        data-id="{{ book.id }}"
+        data-price="{{ book.price }}"
+        data-discount="{{ book.discount }}"
+        data-condition="{{ book.condition|lower }}"
+        data-order="{{ forloop.counter }}"
+        data-title="{{ book.title }}"
+        data-author="{{ book.author }}"
+        data-old-price="{{ book.old_price }}"
+        data-img="{{ book.img_url }}">
+        <span class="badge-sale">-{{ book.discount }}%</span>
+        <button class="cat-wishlist-btn" type="button" aria-label="Add to wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <a href="{% url 'catalog:book_detail' book.id %}" class="book-card-link">
+          <img src="{{ book.img_url_small }}" alt="{{ book.title }} cover">
+          <h4>{{ book.title }}</h4>
+          <span class="author">{{ book.author }}</span>
+        </a>
+        <span class="cat-condition-tag">{{ book.condition }}</span>
+        <div class="price-row">
+          <span class="price-now">₹{{ book.price }}</span>
+          <span class="price-old">₹{{ book.old_price }}</span>
+        </div>
+        <button class="btn-add-cart">Add to Cart</button>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'catalog/js/category.js' %}"></script>
+{% endblock %}

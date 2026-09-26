@@ -1,0 +1,209 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Account Settings — Inkwell Books{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'accounts/css/account_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="dash-hero">
+  <div class="container dash-hero-row">
+    <div class="dash-avatar">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ user.get_full_name|default:user.username }}">
+      {% else %}
+        {% if user.first_name %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% else %}{{ user.username|slice:":2"|upper }}{% endif %}
+      {% endif %}
+    </div>
+    <div>
+      <span class="eyebrow">Account Settings</span>
+      <h1>{{ user.get_full_name|default:user.username }}</h1>
+      <p>{{ user.email }} · Member since {{ user.date_joined|date:"M Y" }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section dash-section">
+  <div class="container dash-layout">
+
+    <nav class="dash-nav">
+      <a href="{% url 'accounts:dashboard' %}">Overview</a>
+      <a href="{% url 'orders:my_orders' %}">My Orders</a>
+      <a href="{% url 'orders:track_order' %}">Track Order</a>
+      <a href="{% url 'core:wishlist' %}">Wishlist</a>
+      <a href="{% url 'accounts:account_settings' %}" class="is-active">Account Settings</a>
+    </nav>
+
+    <div class="dash-main">
+
+      <!-- ============ PROFILE ============ -->
+      <div class="dash-panel">
+        <div class="dash-panel-head">
+          <h3>Profile</h3>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="settings-form">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="profile">
+
+          <div class="avatar-row">
+            <div class="avatar-preview">
+              {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Profile photo">
+              {% else %}
+                <span>{% if user.first_name %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% else %}{{ user.username|slice:":2"|upper }}{% endif %}</span>
+              {% endif %}
+            </div>
+            <div class="avatar-actions">
+              <label class="btn-secondary avatar-upload-btn">
+                Change Photo
+                <input type="file" name="avatar" accept="image/*" hidden>
+              </label>
+              {% if profile.avatar %}
+              <button type="submit" form="removeAvatarForm" class="btn-secondary btn-danger-outline">Remove Photo</button>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>First Name</label>
+              <input type="text" name="first_name" value="{{ user.first_name }}" required>
+            </div>
+            <div class="field">
+              <label>Last Name</label>
+              <input type="text" name="last_name" value="{{ user.last_name }}">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <input type="tel" name="phone" value="{{ profile.phone }}" placeholder="10-digit mobile number">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary settings-save-btn">Save Profile</button>
+        </form>
+        <form id="removeAvatarForm" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="remove_avatar">
+        </form>
+      </div>
+
+      <!-- ============ SAVED ADDRESSES ============ -->
+      <div class="dash-panel">
+        <div class="dash-panel-head">
+          <h3>Saved Addresses</h3>
+          <button type="button" class="btn-text" id="toggleAddAddress">+ Add New Address</button>
+        </div>
+
+        {% if addresses %}
+        <div class="address-grid">
+          {% for addr in addresses %}
+          <div class="address-card {% if addr.is_default %}is-default{% endif %}">
+            <div class="address-card-top">
+              <span class="address-label-badge">{{ addr.label }}</span>
+              {% if addr.is_default %}<span class="address-default-badge">Default</span>{% endif %}
+            </div>
+            <p class="address-name">{{ addr.full_name }}</p>
+            <p class="address-lines">
+              {{ addr.line1 }}{% if addr.line2 %}, {{ addr.line2 }}{% endif %}<br>
+              {{ addr.city }}, {{ addr.state }} — {{ addr.pincode }}<br>
+              Phone: {{ addr.phone }}
+            </p>
+            <div class="address-card-actions">
+              <button type="button" class="btn-text edit-address-btn"
+                data-id="{{ addr.id }}" data-label="{{ addr.label }}" data-full-name="{{ addr.full_name }}"
+                data-phone="{{ addr.phone }}" data-line1="{{ addr.line1 }}" data-line2="{{ addr.line2 }}"
+                data-city="{{ addr.city }}" data-state="{{ addr.state }}" data-pincode="{{ addr.pincode }}"
+                data-is-default="{{ addr.is_default|yesno:'1,0' }}">Edit</button>
+              {% if not addr.is_default %}
+              <form method="post" class="inline-form">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="set_default_address">
+                <input type="hidden" name="address_id" value="{{ addr.id }}">
+                <button type="submit" class="btn-text">Set Default</button>
+              </form>
+              {% endif %}
+              <form method="post" class="inline-form" onsubmit="return confirm('Remove this address?');">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="delete_address">
+                <input type="hidden" name="address_id" value="{{ addr.id }}">
+                <button type="submit" class="btn-text-danger">Delete</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="dash-empty-note">No saved addresses yet — add one so checkout is faster next time.</p>
+        {% endif %}
+
+        <form method="post" class="settings-form address-form" id="addAddressForm">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="save_address">
+          <input type="hidden" name="address_id" value="" id="addrIdField">
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Label</label>
+              <select name="label" id="addrLabelField">
+                <option value="Home">Home</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" name="full_name" id="addrFullNameField" required>
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <input type="tel" name="addr_phone" id="addrPhoneField" required>
+            </div>
+            <div class="field">
+              <label>Pincode</label>
+              <input type="text" name="pincode" id="addrPincodeField" maxlength="6" required>
+            </div>
+            <div class="field field-span2">
+              <label>Address Line 1</label>
+              <input type="text" name="line1" id="addrLine1Field" required>
+            </div>
+            <div class="field field-span2">
+              <label>Address Line 2 (optional)</label>
+              <input type="text" name="line2" id="addrLine2Field">
+            </div>
+            <div class="field">
+              <label>City</label>
+              <input type="text" name="city" id="addrCityField" required>
+            </div>
+            <div class="field">
+              <label>State</label>
+              <input type="text" name="state" id="addrStateField" required>
+            </div>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" name="is_default" id="addrIsDefaultField">
+            Set as default address
+          </label>
+
+          <button type="submit" class="btn-primary settings-save-btn" id="addrSubmitBtn">Save Address</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'accounts/js/account_settings.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,58 @@
+/* ==========================================================================
+   INKWELL BOOKS — wishlist.css
+   ========================================================================== */
+
+.wl-hero{
+  background: radial-gradient(120% 140% at 100% 0%, #EFE8D6 0%, var(--paper) 55%);
+  padding: 56px 0 40px; text-align:center;
+}
+.wl-hero .eyebrow{ margin-bottom:14px; }
+.wl-hero h1{ font-size:36px; margin-bottom:10px; }
+.wl-hero p{ font-size:14.5px; color: var(--charcoal-60); max-width:460px; margin:0 auto; line-height:1.65; }
+
+.wl-section{ padding-top:48px; }
+
+/* ============ EMPTY STATE ============ */
+.wl-empty{ display:none; text-align:center; max-width:420px; margin:0 auto; padding: 40px 0 20px; }
+.wl-empty.is-visible{ display:block; }
+.wl-empty-icon{
+  width:64px; height:64px; border-radius:50%; background: var(--paper-2); color: var(--gold-dark);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+}
+.wl-empty-icon svg{ width:30px; height:30px; }
+.wl-empty h3{ font-size:19px; margin-bottom:8px; }
+.wl-empty p{ font-size:13.5px; color: var(--charcoal-60); margin-bottom:22px; }
+
+/* ============ SAVED ITEMS GRID ============ */
+.wl-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+.wl-card{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  padding:14px; position:relative; overflow:hidden;
+}
+.wl-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold); z-index:1;
+}
+.wl-card img{ width:100%; height:190px; object-fit:cover; border-radius:8px; margin-bottom:12px; background:var(--paper-2); }
+.wl-remove-btn{
+  position:absolute; top:20px; right:20px; z-index:2;
+  width:30px; height:30px; border-radius:50%; background: rgba(255,255,255,0.9); border:0;
+  display:flex; align-items:center; justify-content:center; color: var(--brick);
+  transition: background .15s, color .15s;
+}
+.wl-remove-btn svg{ width:15px; height:15px; }
+.wl-remove-btn:hover{ background: var(--brick); color:#fff; }
+.wl-card h4{ font-size:14.5px; margin-bottom:2px; line-height:1.3; }
+.wl-card .author{ font-size:12px; color: var(--charcoal-60); display:block; margin-bottom:10px; }
+.wl-price-row{ display:flex; align-items:baseline; gap:8px; margin-bottom:10px; }
+.wl-price-now{ font-family: var(--font-mono); font-weight:700; font-size:16px; color: var(--ink); }
+.wl-price-old{ font-family: var(--font-mono); font-size:12.5px; color:#9C9385; text-decoration: line-through; }
+.wl-move-btn{
+  width:100%; background: var(--ink); color:#fff; border:0;
+  padding:9px; border-radius: var(--radius-s); font-size:13px; font-weight:700; transition: background .15s;
+}
+.wl-move-btn:hover{ background: var(--ink-2); }
+.wl-move-btn.is-added{ background: var(--success); }
+
+@media (max-width: 1080px){ .wl-grid{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 640px){ .wl-grid{ grid-template-columns: 1fr; } }

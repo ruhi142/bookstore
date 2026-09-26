@@ -1,0 +1,43 @@
+.cr-hero{
+  background: radial-gradient(120% 140% at 100% 0%, #EFE8D6 0%, var(--paper) 55%);
+  padding: 60px 0 44px; text-align:center;
+}
+.cr-hero .eyebrow{ margin-bottom:16px; }
+.cr-hero h1{ font-size:38px; max-width:680px; margin:0 auto 14px; line-height:1.2; }
+.cr-hero p{ font-size:15px; color: var(--charcoal-60); max-width:520px; margin:0 auto; line-height:1.65; }
+
+.cr-values-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+.cr-value-card{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  padding:28px 22px; text-align:center; position:relative; overflow:hidden;
+}
+.cr-value-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold);
+}
+.cr-value-icon{
+  width:48px; height:48px; border-radius:50%; background: var(--paper-2); color: var(--gold-dark);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 16px;
+}
+.cr-value-icon svg{ width:22px; height:22px; }
+.cr-value-card h4{ font-size:15px; margin-bottom:8px; }
+.cr-value-card p{ font-size:13px; color: var(--charcoal-60); line-height:1.6; }
+
+.cr-openings-section{ background: var(--paper-2); }
+.cr-jobs-list{ display:flex; flex-direction:column; gap:12px; max-width:780px; margin:0 auto; }
+.cr-job-card{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+  padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  position:relative; overflow:hidden;
+}
+.cr-job-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold);
+}
+.cr-job-card h4{ font-size:15.5px; margin-bottom:4px; }
+.cr-job-meta{ font-size:12.5px; color: var(--charcoal-60); }
+.cr-no-fit{ text-align:center; font-size:13.5px; color: var(--charcoal-60); margin-top:24px; }
+.cr-no-fit a{ color: var(--gold-dark); font-weight:600; }
+
+@media (max-width: 900px){ .cr-values-grid{ grid-template-columns:1fr; } }
+@media (max-width: 640px){ .cr-job-card{ flex-direction:column; align-items:flex-start; } }

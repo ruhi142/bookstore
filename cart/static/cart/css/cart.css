@@ -1,0 +1,115 @@
+/* ==========================================================================
+   INKWELL BOOKS — cart.css
+   Stacked layout: item cards full-width, order summary below (not side-by-side).
+   Product card style based on the reference: badge, qty stepper, price row,
+   Move to Wishlist / Remove actions on the right.
+   ========================================================================== */
+
+.ct-hero{
+  background: radial-gradient(120% 140% at 100% 0%, #EFE8D6 0%, var(--paper) 55%);
+  padding: 56px 0 40px;
+}
+.ct-hero-row{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; }
+.ct-hero .eyebrow{ margin-bottom:14px; }
+.ct-hero h1{ font-size:36px; }
+.ct-currency{ display:flex; align-items:center; gap:8px; }
+.ct-currency label{ font-size:12.5px; color: var(--charcoal-60); font-weight:600; }
+.ct-currency select{
+  padding:8px 12px; border:1.5px solid var(--line); border-radius: var(--radius-s);
+  font-size:13px; font-family: var(--font-body); background:#fff; color: var(--charcoal);
+}
+.ct-currency select:focus{ border-color: var(--gold); outline:0; }
+
+.ct-section{ padding-top:48px; }
+
+/* ============ EMPTY STATE ============ */
+.ct-empty{ display:none; text-align:center; max-width:420px; margin:0 auto; padding: 40px 0 20px; }
+.ct-empty.is-visible{ display:block; }
+.ct-empty-icon{
+  width:64px; height:64px; border-radius:50%; background: var(--paper-2); color: var(--gold-dark);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+}
+.ct-empty-icon svg{ width:30px; height:30px; }
+.ct-empty h3{ font-size:19px; margin-bottom:8px; }
+.ct-empty p{ font-size:13.5px; color: var(--charcoal-60); margin-bottom:22px; }
+
+/* ============ STACKED LAYOUT ============ */
+.ct-layout{ display:flex; flex-direction:column; gap:28px; max-width:900px; margin:0 auto; }
+.ct-items{ display:flex; flex-direction:column; gap:16px; }
+
+/* ============ ITEM CARD (matches reference: image+badge, qty stepper, actions) ============ */
+.ct-item{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+  padding:22px; display:flex; gap:20px; align-items:flex-start; position:relative;
+}
+.ct-item-num{ font-size:14px; font-weight:700; color: var(--charcoal-60); flex-shrink:0; padding-top:4px; }
+.ct-item-imgwrap{ position:relative; flex-shrink:0; display:block; }
+.ct-item-info h4 a{ color: inherit; }
+.ct-item-info h4 a:hover{ text-decoration: underline; }
+.ct-item-imgwrap img{ width:88px; height:118px; object-fit:cover; border-radius:8px; background:var(--paper-2); }
+.ct-item-badge{
+  position:absolute; top:-8px; right:-8px; background: var(--brick); color:#fff;
+  font-size:11px; font-weight:700; width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.ct-item-info{ flex:1; min-width:0; }
+.ct-item-info h4{ font-size:16px; margin-bottom:4px; }
+.ct-item-info .author{ font-size:13px; color: var(--charcoal-60); }
+.ct-item-info .author a{ color: var(--gold-dark); font-weight:600; }
+.ct-item-price-row{ display:flex; align-items:baseline; gap:10px; margin:10px 0 14px; }
+.ct-item-price-now{ font-family: var(--font-mono); font-weight:700; font-size:19px; color: var(--brick); }
+.ct-item-price-old{ font-family: var(--font-mono); font-size:14px; color:#9C9385; text-decoration: line-through; }
+.ct-item-bottom-row{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+.ct-qty{ display:flex; align-items:center; gap:0; border:1.5px solid var(--line); border-radius: var(--radius-s); overflow:hidden; }
+.ct-qty button{
+  width:32px; height:32px; background: var(--paper-2); border:0;
+  color: var(--ink); font-weight:700; font-size:16px; display:flex; align-items:center; justify-content:center;
+}
+.ct-qty button:hover{ background: var(--gold); }
+.ct-qty span{ font-family: var(--font-mono); font-size:14px; min-width:36px; text-align:center; background:#fff; height:32px; display:flex; align-items:center; justify-content:center; }
+.ct-item-total{ font-family: var(--font-mono); font-weight:700; color: var(--brick); font-size:14.5px; }
+
+.ct-item-actions{ display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+.ct-move-wishlist-btn{
+  background: var(--brick); color:#fff; border:0; padding:9px 16px;
+  border-radius: var(--radius-s); font-size:12.5px; font-weight:700; white-space:nowrap; transition: background .15s;
+}
+.ct-move-wishlist-btn:hover{ background:#8C3436; }
+.ct-remove-btn{
+  background:#fff; color: var(--brick); border:1.5px solid var(--brick); padding:9px 16px;
+  border-radius: var(--radius-s); font-size:12.5px; font-weight:700; white-space:nowrap; transition: all .15s;
+}
+.ct-remove-btn:hover{ background: var(--brick); color:#fff; }
+
+/* ============ ORDER SUMMARY (below items, not beside) ============ */
+.ct-summary{
+  background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+  padding:28px; box-shadow: var(--shadow-card);
+}
+.ct-summary h3{ font-size:18px; margin-bottom:18px; }
+.ct-summary-grid{
+  display:grid; grid-template-columns: repeat(2,1fr); gap: 10px 40px;
+  padding-bottom:16px; margin-bottom:6px; border-bottom:1px solid var(--line);
+}
+.ct-summary-row{ display:flex; justify-content:space-between; font-size:14px; color: var(--charcoal-60); }
+.ct-summary-total{
+  font-weight:700; color: var(--ink); font-size:17px; grid-column: 1 / -1;
+  padding-top:12px; border-top:1px solid var(--line);
+}
+.ct-summary-note{ font-size:12.5px; color: var(--gold-dark); margin: 12px 0 18px; }
+.ct-summary-actions{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; flex-wrap:wrap; }
+.ct-checkout-btn{ width:auto; padding:13px 32px; display:inline-block; text-align:center; }
+.ct-summary-secure{
+  display:flex; align-items:center; gap:6px; justify-content:center;
+  font-size:12px; color: var(--charcoal-60);
+}
+.ct-summary-secure svg{ width:14px; height:14px; }
+
+@media (max-width: 640px){
+  .ct-item{ flex-wrap:wrap; }
+  .ct-item-actions{ flex-direction:row; width:100%; }
+  .ct-item-actions button, .ct-item-actions a{ flex:1; }
+  .ct-summary-grid{ grid-template-columns:1fr; }
+  .ct-summary-actions{ flex-direction:column; align-items:stretch; }
+  .ct-hero-row{ flex-direction:column; align-items:flex-start; }
+}

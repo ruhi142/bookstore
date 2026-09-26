@@ -1,0 +1,14 @@
+Congratulations, {{ first_name }}!
+
+Your account with Inkwell Books has been created successfully. We're delighted to welcome you to our community of readers.
+
+Here's what you can do next:
+- Browse our catalog and find your next favorite read
+- Save titles to your wishlist
+- Track your orders from your dashboard
+
+Start exploring: {{ site_url }}
+
+--
+You're receiving this because you created an account at Inkwell Books.
+© {{ current_year }} Inkwell Books. All rights reserved.
